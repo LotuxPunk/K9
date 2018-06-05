@@ -1,7 +1,9 @@
 package com.vandendaelen.k9;
 
+import com.vandendaelen.k9.event.RegisteringEvent;
 import com.vandendaelen.k9.proxy.CommonProxy;
 import com.vandendaelen.k9.utils.Reference;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import scala.tools.nsc.backend.icode.TypeKinds;
@@ -10,6 +12,10 @@ import scala.tools.nsc.backend.icode.TypeKinds;
 public class K9 {
     @Mod.Instance(Reference.MODID)
     public static K9 instance;
+
+    public K9() {
+        MinecraftForge.EVENT_BUS.register(new RegisteringEvent());
+    }
 
     @SidedProxy(clientSide = Reference.CLIENT_PROXY,serverSide = Reference.SERVER_PROXY)
     public static CommonProxy proxy;

@@ -1,7 +1,7 @@
 package com.vandendaelen.k9.utils;
 
 public class Reference {
-    public static final String MODID ="K9";
+    public static final String MODID ="k9";
     public static final String NAME = "K9 Mod";
     public static final String VERSION = "0.1";
 

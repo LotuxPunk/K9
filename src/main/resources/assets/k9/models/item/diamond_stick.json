@@ -1,0 +1,6 @@
+{
+  "parent":"item/handheld",
+  "textures":{
+    "layer0":"k9:items/diamond_stick"
+  }
+}
