@@ -6,7 +6,6 @@ import com.vandendaelen.k9.utils.Reference;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
-import scala.tools.nsc.backend.icode.TypeKinds;
 
 @Mod(modid = Reference.MODID, name =Reference.NAME , version =Reference.VERSION )
 public class K9 {
