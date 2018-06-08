@@ -7,4 +7,6 @@ public class Reference {
 
     public static final String CLIENT_PROXY = "com.vandendaelen.k9.proxy.ClientProxy";
     public static final String SERVER_PROXY = "com.vandendaelen.k9.proxy.ServerProxy";
+
+    public static final int ENTITY_K9 = 42;
 }
