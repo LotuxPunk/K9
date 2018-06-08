@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
+  "modid": "k9",
+  "name": "K9 Mod",
+  "description": "K9, the robot dog of the Doctor !.",
+  "version": "0.1",
+  "mcversion": "1.12.2",
+  "url": "https://github.com/LotuxPunk/K9",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["LotuxPunk"],
+  "credits": "",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
