@@ -1,26 +1,26 @@
 {
-  "entity.k9.ambient":
+  "k9_ambient":
   {
-    "category":"entity",
-    "subtitle":"entity.k9.ambient",
+    "category":"neutral",
+    "subtitle":"k9_ambient",
     "sounds":[{
       "name":"k9:entity/k9/ambient",
       "stream":true
     }]
   },
-  "entity.k9.hurt":
+  "k9_hurt":
   {
-    "category":"entity",
-    "subtitle":"entity.k9.hurt",
+    "category":"neutral",
+    "subtitle":"k9_hurt",
     "sounds":[{
       "name":"k9:entity/k9/hurt",
       "stream":true
     }]
   },
-  "entity.k9.death":
+  "k9_death":
   {
-    "category":"entity",
-    "subtitle":"entity.k9.death",
+    "category":"neutral",
+    "subtitle":"k9_death",
     "sounds":[{
       "name":"k9:entity/k9/death",
       "stream":true

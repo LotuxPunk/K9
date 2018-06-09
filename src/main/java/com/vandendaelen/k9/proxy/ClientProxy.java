@@ -1,5 +1,7 @@
 package com.vandendaelen.k9.proxy;
 
+import com.vandendaelen.k9.utils.handlers.SoundHandler;
+
 public class ClientProxy extends CommonProxy{
 
     @Override
