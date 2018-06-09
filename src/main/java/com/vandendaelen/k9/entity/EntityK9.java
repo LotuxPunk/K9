@@ -1,5 +1,6 @@
 package com.vandendaelen.k9.entity;
 
+import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.passive.EntityWolf;
@@ -15,16 +16,16 @@ public class EntityK9 extends EntityWolf {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return super.getAmbientSound();
+        return SoundHandler.ENTITY_K9_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return super.getHurtSound(damageSourceIn);
+        return SoundHandler.ENTITY_K9_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return super.getDeathSound();
+        return SoundHandler.ENTITY_K9_DEATH;
     }
 }

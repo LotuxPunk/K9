@@ -18,4 +18,8 @@ public class RegistryHandler {
 
         RenderHandler.registerEntityRenders();
     }
+
+    public static void initRegisteries(){
+        SoundHandler.registerSounds();
+    }
 }

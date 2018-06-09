@@ -1,0 +1,29 @@
+{
+  "entity.k9.ambient":
+  {
+    "category":"entity",
+    "subtitle":"entity.k9.ambient",
+    "sounds":[{
+      "name":"k9:entity/k9/ambient",
+      "stream":true
+    }]
+  },
+  "entity.k9.hurt":
+  {
+    "category":"entity",
+    "subtitle":"entity.k9.hurt",
+    "sounds":[{
+      "name":"k9:entity/k9/hurt",
+      "stream":true
+    }]
+  },
+  "entity.k9.death":
+  {
+    "category":"entity",
+    "subtitle":"entity.k9.death",
+    "sounds":[{
+      "name":"k9:entity/k9/death",
+      "stream":true
+    }]
+  }
+}
