@@ -1,1 +1,7 @@
 entity.K9.name=K9
+
+item.ingot_plaurium.name=Plaurium ingot
+
+tile.block_plaurium.name=Plaurium block
+
+itemGroup.k9tab=K9 Mod
