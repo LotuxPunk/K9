@@ -1,0 +1,5 @@
+{
+  "variants":{
+    "variant=plaurium":{ "model":"k9:ore_overworld_plaurium" }
+  }
+}
