@@ -1,5 +1,6 @@
 package com.vandendaelen.k9;
 
+import com.vandendaelen.k9.proxy.ClientProxy;
 import com.vandendaelen.k9.proxy.CommonProxy;
 import com.vandendaelen.k9.tabs.K9Tab;
 import com.vandendaelen.k9.utils.Reference;

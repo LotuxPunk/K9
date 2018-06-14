@@ -1,5 +1,6 @@
 package com.vandendaelen.k9.utils.handlers;
 
+import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.init.BlockInit;
 import com.vandendaelen.k9.init.ItemInit;
 import com.vandendaelen.k9.init.ModEntity;
@@ -15,26 +16,32 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class RegistryHandler {
 
     @SubscribeEvent
-    public void onItemRegister(RegistryEvent.Register<Item> e){
-        e.getRegistry().registerAll(ItemInit.ITEMS.toArray(new Item[0]));
+    public static void onItemRegister(RegistryEvent.Register<Item> event){
+        event.getRegistry().registerAll(ItemInit.ITEMS.toArray(new Item[0]));
     }
 
     @SubscribeEvent
-    public void onBlockRegister(RegistryEvent.Register<Block> e){
-        e.getRegistry().registerAll(BlockInit.BLOCKS.toArray(new Block[0]));
+    public static void onBlockRegister(RegistryEvent.Register<Block> event){
+        event.getRegistry().registerAll(BlockInit.BLOCKS.toArray(new Block[0]));
     }
 
     @SubscribeEvent
-    public void onModelRegister(ModelRegistryEvent e) {
+    public static void onModelRegister(ModelRegistryEvent e) {
         for (Item item:ItemInit.ITEMS) {
             if (item instanceof IHasModel){
                 ((IHasModel)item).registerModels();
+            }
+            else{
+                K9.proxy.Register(item);
             }
         }
 
         for (Block block : BlockInit.BLOCKS){
             if (block instanceof IHasModel){
                 ((IHasModel)block).registerModels();
+            }
+            else{
+                K9.proxy.Register(block);
             }
         }
     }
