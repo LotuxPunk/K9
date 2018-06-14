@@ -1,0 +1,17 @@
+{
+  "type":"minecraft:crafting_shaped",
+  "pattern":[
+    "ppp",
+    "ppp",
+    "ppp"
+  ],
+  "key":{
+    "p":{
+      "item":"k9:ingot_plaurium"
+    }
+  },
+  "result":{
+    "item":"k9:block_plaurium",
+    "count":1
+  }
+}

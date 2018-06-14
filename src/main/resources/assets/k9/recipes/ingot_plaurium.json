@@ -1,0 +1,15 @@
+{
+  "type":"minecraft:crafting_shaped",
+  "pattern":[
+    "B"
+  ],
+  "key":{
+    "B":{
+      "item":"k9:block_plaurium"
+    }
+  },
+  "result":{
+    "item":"k9:ingot_plaurium",
+    "count":9
+  }
+}
