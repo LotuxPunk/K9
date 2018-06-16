@@ -27,6 +27,7 @@ public class K9 {
     @EventHandler
     public void preInit(FMLPreInitializationEvent e){
         RegistryHandler.preInitRegistries();
+        RegistryHandler.otherRegisteries();
     }
 
     @EventHandler

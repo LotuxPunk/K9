@@ -13,8 +13,9 @@ public class BlockInit {
     public static final List<Block> BLOCKS = new ArrayList<Block>();
 
     //Blocks
-    public static final Block BLOCK_PLAURIUM = new BlockBase("block_plaurium", Material.IRON);
+    public static final Block BLOCK_PLAURIUM = new BlockBase("block_plaurium", Material.IRON).setHardness(5F);;
 
     //Ores
-    public static final Block ORE_PLAURIUM = new BlockOres("ore_plaurium","overworld");
+    //public static final Block ORE_PLAURIUM = new BlockOres("ore_overworld_plaurium","overworld");
+    public static final Block ORE_OVERWORLD = new BlockOres("ore_overworld", "overworld").setHardness(50F);
 }
