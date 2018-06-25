@@ -31,9 +31,7 @@ public class K9 {
         RegistryHandler.preInitRegistries();
         RegistryHandler.otherRegisteries();
 
-        if (e.getSide() == Side.CLIENT){
-            RenderHandler.registerEntityRenders();
-        }
+        proxy.preInit(e);
     }
 
     @EventHandler
