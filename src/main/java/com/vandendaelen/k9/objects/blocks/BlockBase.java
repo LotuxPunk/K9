@@ -17,6 +17,5 @@ public class BlockBase extends Block {
 
         BlockInit.BLOCKS.add(this);
         ItemInit.ITEMS.add(new ItemBlock(this).setRegistryName(this.getRegistryName()));
-
     }
 }
