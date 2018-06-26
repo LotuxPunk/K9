@@ -1,7 +1,7 @@
-package com.vandendaelen.k9.entity.render;
+package com.vandendaelen.k9.entities.render;
 
-import com.vandendaelen.k9.entity.EntityK9;
-import com.vandendaelen.k9.entity.model.ModelK9;
+import com.vandendaelen.k9.entities.EntityK9;
+import com.vandendaelen.k9.entities.model.ModelK9;
 import com.vandendaelen.k9.utils.Reference;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;

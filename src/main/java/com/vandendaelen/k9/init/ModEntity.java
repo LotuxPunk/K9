@@ -1,7 +1,7 @@
 package com.vandendaelen.k9.init;
 
 import com.vandendaelen.k9.K9;
-import com.vandendaelen.k9.entity.EntityK9;
+import com.vandendaelen.k9.entities.EntityK9;
 import com.vandendaelen.k9.utils.Reference;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;

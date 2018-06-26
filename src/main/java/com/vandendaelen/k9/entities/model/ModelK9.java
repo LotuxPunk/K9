@@ -1,4 +1,4 @@
-package com.vandendaelen.k9.entity.model;
+package com.vandendaelen.k9.entities.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;

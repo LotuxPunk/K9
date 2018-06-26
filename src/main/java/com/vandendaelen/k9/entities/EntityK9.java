@@ -1,19 +1,18 @@
-package com.vandendaelen.k9.entity;
+package com.vandendaelen.k9.entities;
 
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 
-public class EntityK9 extends EntityWolf {
+public class EntityK9 extends EntityWolf implements IRangedAttackMob {
     public EntityK9(World worldIn) {
         super(worldIn);
         this.setSize(0.6F, 0.85F);
@@ -63,5 +62,26 @@ public class EntityK9 extends EntityWolf {
     @Override
     protected SoundEvent getDeathSound() {
         return SoundHandler.ENTITY_K9_DEATH;
+    }
+
+    @Override
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
+        double x, y, z;
+        Vec3d look = target.getPositionVector().subtract(this.getPositionVector());
+        EntityK9Ray ray = new EntityK9Ray(world,this);
+
+        x = posX+this.getLookVec().x;
+        y = posY + this.getEyeHeight();
+        z = posZ + this.getLookVec().z;
+
+        ray.setPosition(x,y,z);
+        world.spawnEntity(ray);
+
+        //Todo Add sound on fire
+    }
+
+    @Override
+    public void setSwingingArms(boolean swingingArms) {
+
     }
 }

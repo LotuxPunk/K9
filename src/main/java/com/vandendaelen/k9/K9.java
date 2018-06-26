@@ -1,11 +1,9 @@
 package com.vandendaelen.k9;
 
-import com.vandendaelen.k9.proxy.ClientProxy;
 import com.vandendaelen.k9.proxy.CommonProxy;
 import com.vandendaelen.k9.tabs.K9Tab;
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.handlers.RegistryHandler;
-import com.vandendaelen.k9.utils.handlers.RenderHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -14,7 +12,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = Reference.MODID, name =Reference.NAME , version =Reference.VERSION )
 public class K9 {
