@@ -24,7 +24,8 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, true));
+        this.tasks.addTask(4, new EntityAIAttackRanged(this, 0.1D, 30, 25F));
+        this.targetTasks.addTask(4, new EntityAIMoveTowardsTarget(this, 0.023D, 30));
         this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(6, new EntityAIMate(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
