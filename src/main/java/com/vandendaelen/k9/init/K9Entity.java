@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
-public class ModEntity {
+public class K9Entity {
 
     public static void registerEntities(){
         registerEntity("K9",EntityK9.class,Reference.ENTITY_K9,40,16711680,6245729);

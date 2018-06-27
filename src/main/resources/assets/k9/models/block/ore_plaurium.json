@@ -1,6 +1,6 @@
 {
   "parent":"block/cube_all",
   "textures":{
-    "all":"k9:blocks/ore_overworld_plaurium"
+    "all":"k9:blocks/ore_plaurium"
   }
 }

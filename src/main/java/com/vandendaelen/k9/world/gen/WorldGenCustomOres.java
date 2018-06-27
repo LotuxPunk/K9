@@ -1,6 +1,5 @@
 package com.vandendaelen.k9.world.gen;
 
-import com.vandendaelen.k9.init.BlockInit;
 import com.vandendaelen.k9.objects.blocks.BlockOres;
 import com.vandendaelen.k9.utils.handlers.EnumHandler;
 import net.minecraft.block.state.pattern.BlockMatcher;
@@ -19,7 +18,7 @@ public class WorldGenCustomOres implements IWorldGenerator {
     private WorldGenerator ore_overworld_plaurium;
 
     public WorldGenCustomOres() {
-        this.ore_overworld_plaurium = new WorldGenMinable(BlockInit.ORE_OVERWORLD.getDefaultState().withProperty(BlockOres.VARIANT, EnumHandler.EnumType.PLAURIUM),3,BlockMatcher.forBlock(Blocks.STONE));
+        //this.ore_overworld_plaurium = new WorldGenMinable(BlockInit.ORE_OVERWORLD.getDefaultState().withProperty(BlockOres.VARIANT, EnumHandler.EnumType.PLAURIUM),3,BlockMatcher.forBlock(Blocks.STONE));
     }
 
     @Override

@@ -1,90 +1,71 @@
 package com.vandendaelen.k9.objects.blocks;
 
-import com.vandendaelen.k9.K9;
-import com.vandendaelen.k9.init.BlockInit;
-import com.vandendaelen.k9.init.ItemInit;
-import com.vandendaelen.k9.objects.blocks.items.ItemBlockVariants;
-import com.vandendaelen.k9.utils.handlers.EnumHandler;
-import com.vandendaelen.k9.utils.interfaces.IHasModel;
-import com.vandendaelen.k9.utils.interfaces.IMetaName;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
+
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
 
-public class BlockOres extends Block implements IHasModel, IMetaName {
+import java.util.Random;
 
-    public static final PropertyEnum<EnumHandler.EnumType> VARIANT = PropertyEnum.<EnumHandler.EnumType>create("variant",EnumHandler.EnumType.class);
 
-    private String name, dimension;
+public class BlockOres extends BlockBase {
 
-    public BlockOres(String name, String dimension) {
-        super(Material.ROCK);
-        setUnlocalizedName(name);
-        setRegistryName(name);
-        setCreativeTab(K9.k9Tab);
-        setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumHandler.EnumType.PLAURIUM));
+    private Item toDrop;
+    private int minDropAmount = 1;
+    private int maxDropAmount = 0;
 
-        this.name = name;
-        this.dimension = dimension;
+    public BlockOres(String name, Material material) {
+        this(name, material, null, 1, 1);
+    }
 
-        BlockInit.BLOCKS.add(this);
-        ItemInit.ITEMS.add(new ItemBlockVariants(this).setRegistryName(this.getRegistryName()));
+    public BlockOres(String name, Material material, Item toDrop) {
+        this(name, material, toDrop, 1, 1);
+    }
+
+    public BlockOres(String name, Material material, Item toDrop, int dropAmount) {
+        this(name, material, toDrop, dropAmount, dropAmount);
+    }
+
+    public BlockOres(String name, Material material, Item toDrop, int minDropAmount, int maxDropAmount) {
+        super(name,material);
+        this.toDrop = toDrop;
+        this.minDropAmount = minDropAmount;
+        this.maxDropAmount = maxDropAmount;
     }
 
     @Override
-    public int damageDropped(IBlockState state) {
-        return ((EnumHandler.EnumType)state.getValue(VARIANT)).getMeta();
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return toDrop == null ? Item.getItemFromBlock(this):toDrop;
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
-        return ((EnumHandler.EnumType)state.getValue(VARIANT)).getMeta();
+    public int quantityDropped(Random random)
+    {
+        if(this.minDropAmount > this.maxDropAmount) {
+            int i = this.minDropAmount;
+            this.minDropAmount = this.maxDropAmount;
+            this.maxDropAmount = i;
+        }
+        return this.minDropAmount + random.nextInt(this.maxDropAmount - this.minDropAmount + 1);
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return this.getDefaultState().withProperty(VARIANT,EnumHandler.EnumType.byMetadata(meta));
-    }
-
-    @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-        return new ItemStack(Item.getItemFromBlock(this),1,getMetaFromState(world.getBlockState(pos)));
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
-        for (EnumHandler.EnumType variant : EnumHandler.EnumType.values()){
-            items.add(new ItemStack(this,1,variant.getMeta()));
+    public int quantityDroppedWithBonus(int fortune, Random random)
+    {
+        if (fortune > 0 && Item.getItemFromBlock(this) != this.getItemDropped(this.getDefaultState(), random, fortune))
+        {
+            int i = random.nextInt(fortune + 2) - 1;
+            if (i < 0)
+            {
+                i = 0;
+            }
+            return this.quantityDropped(random) * (i + 1);
+        }
+        else
+        {
+            return this.quantityDropped(random);
         }
     }
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this,new IProperty[]{VARIANT});
-    }
-
-    @Override
-    public String getSpecialName(ItemStack stack) {
-        return EnumHandler.EnumType.values()[stack.getItemDamage()].getName();
-    }
-
-    @Override
-    public void registerModels() {
-        for(int i = 0; i < EnumHandler.EnumType.values().length;i++){
-            K9.proxy.registerVariantRenderer(Item.getItemFromBlock(this),i,"ore_"+this.dimension + "_" + EnumHandler.EnumType.values()[i].getName(),"inventory");
-        }
-
-    }
 
 }
