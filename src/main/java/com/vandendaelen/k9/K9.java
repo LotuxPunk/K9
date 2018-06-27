@@ -1,5 +1,7 @@
 package com.vandendaelen.k9;
 
+import com.vandendaelen.k9.init.K9Blocks;
+import com.vandendaelen.k9.init.K9Items;
 import com.vandendaelen.k9.proxy.CommonProxy;
 import com.vandendaelen.k9.tabs.K9Tab;
 import com.vandendaelen.k9.utils.Reference;
@@ -25,17 +27,27 @@ public class K9 {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent e){
+        System.out.println(Reference.MODID + ":preInit");
+
         RegistryHandler.preInitRegistries();
         RegistryHandler.otherRegisteries();
+
+        K9Items.init();
+        K9Blocks.init();
 
         proxy.preInit(e);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent e){
+        System.out.println(Reference.MODID + ":init");
         RegistryHandler.initRegisteries();
+
+        K9Blocks.init();
     }
 
     @EventHandler
-    public void postInit(FMLPostInitializationEvent e){}
+    public void postInit(FMLPostInitializationEvent e){
+        System.out.println(Reference.MODID + ":postInit");
+    }
 }
