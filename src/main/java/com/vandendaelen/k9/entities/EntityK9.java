@@ -24,14 +24,14 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);
         this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
-        this.tasks.addTask(4, new EntityAIAttackRanged(this, 0.1D, 30, 25F));
-        this.targetTasks.addTask(4, new EntityAIMoveTowardsTarget(this, 0.023D, 30));
+        this.tasks.addTask(4, new EntityAIAttackRanged(this, 0.5D, 10, 25F));
+        this.targetTasks.addTask(4, new EntityAIMoveTowardsTarget(this, 1.0D, 20));
         this.tasks.addTask(5, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(6, new EntityAIMate(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(8, new EntityAIBeg(this, 8.0F));
-        this.tasks.addTask(9, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(9, new EntityAILookIdle(this));
+        this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
+        this.tasks.addTask(3, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
@@ -47,7 +47,6 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
     @Override
     public EntityWolf createChild(EntityAgeable ageable) {
         return null;
-
     }
 
     @Override

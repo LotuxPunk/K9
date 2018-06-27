@@ -22,7 +22,15 @@ public class RenderHandler {
             }
         });
 
-        RenderingRegistry.registerEntityRenderingHandler(EntityK9Ray.class, new RenderK9Ray());
+        RenderingRegistry.registerEntityRenderingHandler(EntityK9Ray.class, new IRenderFactory<EntityK9Ray>() {
+            @Override
+            public Render<? super EntityK9Ray> createRenderFor(RenderManager manager) {
+                return new RenderK9Ray(manager);
+            }
+        });
+
+        //RenderingRegistry.registerEntityRenderingHandler(EntityK9Ray.class, new RenderK9Ray());
+
 
     }
 }
