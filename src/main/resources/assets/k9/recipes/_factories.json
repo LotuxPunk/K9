@@ -1,0 +1,7 @@
+{
+  "conditions": {
+    "IsTARDISModLoaded": "com.vandendaelen.k9.utils.condition.TARDISCondition",
+    "IsTARDISModNotLoaded": "com.vandendaelen.k9.utils.condition.NotTARDISCondition"
+
+  }
+}
