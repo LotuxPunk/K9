@@ -3,7 +3,7 @@ package com.vandendaelen.k9.entities;
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
@@ -35,7 +35,8 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
-        this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntitySkeleton.class, false));
+        this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntityMob.class, false));
+
     }
 
     @Override
