@@ -1,0 +1,23 @@
+{
+    "type":"minecraft:crafting_shaped",
+    "pattern":[
+        "BdB",
+        "dRd",
+        "BdB"
+    ],
+    "key":{
+        "B":{
+            "item":"k9:block_plaurium"
+        },
+        "d":{
+            "item":"minecraft:diamond"
+        },
+        "R":{
+            "item":"minecraft:redstone_block"
+        }
+    },
+    "result":{
+        "item":"k9:spawner_k9",
+        "count":1
+    }
+}
