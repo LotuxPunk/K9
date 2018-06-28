@@ -32,6 +32,8 @@ public class K9Blocks {
 
         BLOCKS.add(block_plaurium);
         BLOCKS.add(ore_plaurium);
+
+        //TODO Ajouter une dureter et un niveau de minage
     }
 
     @SubscribeEvent
