@@ -30,6 +30,7 @@ public class OreGen implements IWorldGenerator {
                 break;
             //Everything else
             default:
+                runGenerator(K9Blocks.ore_plaurium.getDefaultState(), 4, 12, 10, 30, BlockMatcher.forBlock(Blocks.STONE), world, random, chunkX, chunkZ);
                 break;
         }
     }
