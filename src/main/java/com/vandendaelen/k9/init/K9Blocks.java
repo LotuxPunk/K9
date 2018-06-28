@@ -30,10 +30,11 @@ public class K9Blocks {
         block_plaurium = new BlockBase("block_plaurium",Material.IRON);
         ore_plaurium = new BlockOres("ore_plaurium",Material.ROCK);
 
+        block_plaurium.setHardness(6.0F).setHarvestLevel("pickaxe", 2);
+        ore_plaurium.setHardness(6.0F).setHarvestLevel("pickaxe", 3);
+
         BLOCKS.add(block_plaurium);
         BLOCKS.add(ore_plaurium);
-
-        //TODO Ajouter une dureter et un niveau de minage
     }
 
     @SubscribeEvent
