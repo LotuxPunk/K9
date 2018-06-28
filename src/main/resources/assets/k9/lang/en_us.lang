@@ -1,9 +1,9 @@
 entity.K9.name=K9
 
 item.ingot_plaurium.name=Plaurium ingot
+item.spawner_k9.name=K9
 
 tile.block_plaurium.name=Plaurium block
-
 tile.ore_plaurium.name=Plaurium Ore
 
 itemGroup.k9tab=K9 Mod
