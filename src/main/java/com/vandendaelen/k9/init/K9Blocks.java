@@ -45,7 +45,7 @@ public class K9Blocks {
     public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
         for(Block block : BLOCKS){
             ItemBlock itemBlock = new ItemBlock(block);
-            event.getRegistry().register(itemBlock);
+            event.getRegistry().registerAll(itemBlock.setRegistryName(block.getRegistryName()));
         }
     }
 

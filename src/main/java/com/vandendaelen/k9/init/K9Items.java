@@ -22,23 +22,10 @@ public class K9Items {
 
     public static Item ingot_plaurium;
 
-    static final CreativeTabs k9TabItems = (new CreativeTabs("k9TabItems") {
-
-        @Override
-        public ItemStack getTabIconItem() {
-            return new ItemStack(ingot_plaurium);
-        }
-
-    });
-
     public static void init(){
         ingot_plaurium = new ItemBase("ingot_plaurium");
 
         ITEMS.add(ingot_plaurium);
-
-        for (Item item:ITEMS) {
-            item.setCreativeTab(k9TabItems);
-        }
     }
 
     @SubscribeEvent
