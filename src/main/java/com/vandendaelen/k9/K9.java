@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-@Mod(modid = Reference.MODID, name =Reference.NAME , version =Reference.VERSION )
+@Mod(modid = Reference.MODID, name =Reference.NAME , version =Reference.VERSION, dependencies = Reference.DEPENDENCIES)
 public class K9 {
     @Instance(Reference.MODID)
     public static K9 instance;
