@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
@@ -13,6 +14,7 @@ import net.minecraft.world.World;
 
 
 public class EntityK9 extends EntityWolf implements IRangedAttackMob {
+
     public EntityK9(World worldIn) {
         super(worldIn);
         this.setSize(0.6F, 0.85F);
@@ -20,6 +22,11 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
 
     @Override
     protected void initEntityAI() {
+        setPathPriority(PathNodeType.WATER, -1.0F);
+        setAIMoveSpeed(0.7F);
+        setMoveForward(0);
+        enablePersistence();
+
         this.aiSit = new EntityAISit(this);
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, this.aiSit);
@@ -83,5 +90,10 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
     @Override
     public void setSwingingArms(boolean swingingArms) {
 
+    }
+
+    @Override
+    protected boolean canDespawn() {
+        return false;
     }
 }
