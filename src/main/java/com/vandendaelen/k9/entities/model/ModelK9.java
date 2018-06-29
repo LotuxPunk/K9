@@ -5,55 +5,90 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 /**
- * ModelWolf - Either Mojang or a mod author
+ * ModelK9 - VampireRedEye
  * Created using Tabula 7.0.0
  */
 public class ModelK9 extends ModelBase {
-    public ModelRenderer k9_tail;
-    public ModelRenderer k9_noze;
-    public ModelRenderer k9_head;
-    public ModelRenderer ear_right;
-    public ModelRenderer ear_left;
-    public ModelRenderer K9_body;
-    public ModelRenderer k9_low_body;
+    public ModelRenderer base;
+    public ModelRenderer tail;
+    public ModelRenderer head;
+    public ModelRenderer body;
+    public ModelRenderer body2;
+    public ModelRenderer body3;
+    public ModelRenderer keypad;
+    public ModelRenderer keypad2;
+    public ModelRenderer collar;
+    public ModelRenderer neck;
+    public ModelRenderer snout;
+    public ModelRenderer eyes;
+    public ModelRenderer earl;
+    public ModelRenderer earr;
 
     public ModelK9() {
         this.textureWidth = 64;
-        this.textureHeight = 32;
-        this.k9_head = new ModelRenderer(this, 0, 0);
-        this.k9_head.setRotationPoint(-1.0F, 13.5F, -7.0F);
-        this.k9_head.addBox(-2.0F, -3.0F, -2.0F, 6, 6, 4, 0.0F);
-        this.k9_low_body = new ModelRenderer(this, 0, 0);
-        this.k9_low_body.mirror = true;
-        this.k9_low_body.setRotationPoint(-4.0F, 17.0F, -4.9F);
-        this.k9_low_body.addBox(0.0F, 0.0F, 0.0F, 8, 7, 13, 0.0F);
-        this.k9_tail = new ModelRenderer(this, 9, 18);
-        this.k9_tail.setRotationPoint(-1.0F, 13.4F, 8.0F);
-        this.k9_tail.addBox(0.0F, 0.0F, -1.0F, 2, 6, 2, 0.0F);
-        this.K9_body = new ModelRenderer(this, 0, 0);
-        this.K9_body.setRotationPoint(0.0F, 14.1F, -3.0F);
-        this.K9_body.addBox(-3.0F, -2.0F, -3.0F, 6, 12, 4, 0.0F);
-        this.setRotateAngle(K9_body, 1.5707963267948966F, 0.0F, 0.017453292519943295F);
-        this.ear_right = new ModelRenderer(this, 16, 14);
-        this.ear_right.setRotationPoint(-1.0F, 13.5F, -7.0F);
-        this.ear_right.addBox(-2.0F, -5.0F, 0.0F, 2, 2, 1, 0.0F);
-        this.ear_left = new ModelRenderer(this, 16, 14);
-        this.ear_left.setRotationPoint(-1.0F, 13.5F, -7.0F);
-        this.ear_left.addBox(2.0F, -5.0F, 0.0F, 2, 2, 1, 0.0F);
-        this.k9_noze = new ModelRenderer(this, 0, 10);
-        this.k9_noze.setRotationPoint(-1.0F, 13.5F, -7.0F);
-        this.k9_noze.addBox(-0.5F, 0.0F, -5.0F, 3, 3, 4, 0.0F);
+        this.textureHeight = 64;
+        this.collar = new ModelRenderer(this, 52, 0);
+        this.collar.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.collar.addBox(-2.0F, -6.5F, -6.8F, 4, 4, 1, 0.0F);
+        this.neck = new ModelRenderer(this, 38, 0);
+        this.neck.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.neck.addBox(-1.0F, 0.5F, -11.3F, 2, 2, 4, 0.0F);
+        this.setRotateAngle(neck, -0.8651597102135892F, 0.0F, 0.0F);
+        this.snout = new ModelRenderer(this, 0, 24);
+        this.snout.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.snout.addBox(-1.5F, -1.0F, -6.0F, 3, 2, 4, 0.0F);
+        this.eyes = new ModelRenderer(this, 0, 20);
+        this.eyes.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.eyes.addBox(-1.5F, -1.5F, -4.0F, 3, 2, 1, 0.0F);
+        this.setRotateAngle(eyes, -0.3490658503988659F, 0.0F, 0.0F);
+        this.body = new ModelRenderer(this, 24, 34);
+        this.body.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.body.addBox(-4.0F, -3.0F, -6.0F, 8, 3, 12, 0.0F);
+        this.earl = new ModelRenderer(this, 0, 0);
+        this.earl.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.earl.addBox(1.0F, -5.0F, -1.0F, 2, 2, 1, 0.0F);
+        this.tail = new ModelRenderer(this, 0, 0);
+        this.tail.setRotationPoint(0.0F, 18.0F, 4.0F);
+        this.tail.addBox(-0.5F, -0.5F, 0.0F, 1, 1, 8, 0.0F);
+        this.body2 = new ModelRenderer(this, 24, 19);
+        this.body2.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.body2.addBox(-3.5F, -6.0F, -6.0F, 7, 3, 11, 0.0F);
+        this.base = new ModelRenderer(this, 16, 49);
+        this.base.setRotationPoint(0.0F, 23.0F, 0.0F);
+        this.base.addBox(-5.0F, 0.0F, -7.0F, 10, 1, 14, 0.0F);
+        this.head = new ModelRenderer(this, 0, 10);
+        this.head.setRotationPoint(0.0F, 16.0F, -8.0F);
+        this.head.addBox(-2.0F, -3.0F, -3.0F, 4, 4, 4, 0.0F);
+        this.keypad2 = new ModelRenderer(this, 27, 0);
+        this.keypad2.setRotationPoint(0.0F, 0.0F, 1.9F);
+        this.keypad2.addBox(-1.5F, -7.5F, -3.5F, 3, 1, 2, 0.0F);
+        this.earr = new ModelRenderer(this, 0, 0);
+        this.earr.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.earr.addBox(-3.0F, -5.0F, -1.0F, 2, 2, 1, 0.0F);
+        this.body3 = new ModelRenderer(this, 26, 8);
+        this.body3.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.body3.addBox(-3.0F, -7.0F, -6.0F, 6, 1, 10, 0.0F);
+        this.keypad = new ModelRenderer(this, 16, 0);
+        this.keypad.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.keypad.addBox(-1.5F, -8.0F, -3.5F, 3, 1, 2, 0.0F);
+        this.base.addChild(this.collar);
+        this.base.addChild(this.neck);
+        this.head.addChild(this.snout);
+        this.head.addChild(this.eyes);
+        this.base.addChild(this.body);
+        this.head.addChild(this.earl);
+        this.base.addChild(this.body2);
+        this.base.addChild(this.keypad2);
+        this.head.addChild(this.earr);
+        this.base.addChild(this.body3);
+        this.base.addChild(this.keypad);
     }
 
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
-        this.k9_head.render(f5);
-        this.k9_low_body.render(f5);
-        this.k9_tail.render(f5);
-        this.K9_body.render(f5);
-        this.ear_right.render(f5);
-        this.ear_left.render(f5);
-        this.k9_noze.render(f5);
+        this.tail.render(f5);
+        this.base.render(f5);
+        this.head.render(f5);
     }
 
     /**
@@ -65,15 +100,17 @@ public class ModelK9 extends ModelBase {
         modelRenderer.rotateAngleZ = z;
     }
 
-    @Override
+    /*@Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn){
-        this.k9_head.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.k9_head.rotateAngleX = headPitch * 0.017453292F;
-        this.k9_noze.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.k9_noze.rotateAngleX = headPitch * 0.017453292F;
-        this.ear_left.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.ear_left.rotateAngleX = headPitch * 0.017453292F;
-        this.ear_right.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.ear_right.rotateAngleX = headPitch * 0.017453292F;
-    }
+        this.head.rotateAngleY = netHeadYaw * 0.017453292F;
+        this.head.rotateAngleX = headPitch * 0.017453292F;
+        this.eyes.rotateAngleY = netHeadYaw * 0.017453292F;
+        this.eyes.rotateAngleX = headPitch * 0.017453292F;
+        this.earl.rotateAngleY = netHeadYaw * 0.017453292F;
+        this.earl.rotateAngleX = headPitch * 0.017453292F;
+        this.earr.rotateAngleY = netHeadYaw * 0.017453292F;
+        this.earr.rotateAngleX = headPitch * 0.017453292F;
+        this.snout.rotateAngleY = netHeadYaw * 0.017453292F;
+        this.snout.rotateAngleX = headPitch * 0.017453292F;
+    }*/
 }
