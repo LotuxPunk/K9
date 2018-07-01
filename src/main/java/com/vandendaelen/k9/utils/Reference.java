@@ -11,4 +11,6 @@ public class Reference {
 
     public static final int ENTITY_K9 = 42;
     public static final int ENTITY_K9_RAY = 43;
+
+    public static final String TARDIS_MODID = "tardis";
 }

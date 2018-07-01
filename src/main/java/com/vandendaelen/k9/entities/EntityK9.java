@@ -1,6 +1,8 @@
 package com.vandendaelen.k9.entities;
 
+import com.vandendaelen.k9.gui.K9Gui;
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
@@ -8,9 +10,13 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 
 public class EntityK9 extends EntityWolf implements IRangedAttackMob {
@@ -47,6 +53,13 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
+        Minecraft.getMinecraft().displayGuiScreen(new K9Gui());
+        return EnumActionResult.SUCCESS;
     }
 
     @Override
