@@ -15,6 +15,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -58,7 +59,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
     @SideOnly(Side.CLIENT)
     @Override
     public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
-        Minecraft.getMinecraft().displayGuiScreen(new K9Gui());
+        Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension));
         return EnumActionResult.SUCCESS;
     }
 
