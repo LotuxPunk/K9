@@ -3,6 +3,7 @@ package com.vandendaelen.k9;
 import com.vandendaelen.k9.init.K9Blocks;
 import com.vandendaelen.k9.init.K9Items;
 import com.vandendaelen.k9.init.K9Recipes;
+import com.vandendaelen.k9.packets.MessageK9Piloting;
 import com.vandendaelen.k9.proxy.CommonProxy;
 import com.vandendaelen.k9.tabs.K9Tab;
 import com.vandendaelen.k9.utils.Reference;
@@ -16,12 +17,16 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = Reference.MODID, name =Reference.NAME , version =Reference.VERSION, dependencies = Reference.DEPENDENCIES)
 public class K9 {
     @Instance(Reference.MODID)
     public static K9 instance;
+    public static SimpleNetworkWrapper NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID);
 
     public static final CreativeTabs k9Tab = new K9Tab("k9tab");
 
@@ -37,6 +42,8 @@ public class K9 {
 
         K9Items.init();
         K9Blocks.init();
+
+        NETWORK.registerMessage(MessageK9Piloting.Handler.class,MessageK9Piloting.class,1,Side.SERVER);
 
         proxy.preInit(e);
     }

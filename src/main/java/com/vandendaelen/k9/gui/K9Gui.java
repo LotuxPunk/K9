@@ -1,6 +1,8 @@
 package com.vandendaelen.k9.gui;
 
 import com.mojang.authlib.GameProfile;
+import com.vandendaelen.k9.K9;
+import com.vandendaelen.k9.packets.MessageK9Piloting;
 import com.vandendaelen.k9.utils.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -23,6 +25,8 @@ public class K9Gui extends GuiScreen {
     private final int guiWidth = 248;
     private final int btnHeight = 20;
     private final int btnWidth = 100;
+    private final int fieldHeight = 10;
+    private final int fieldWidth = 80;
     private final String btnConfirmText = "Allons-y !";
 
     public GuiButton btnConfirm;
@@ -39,6 +43,7 @@ public class K9Gui extends GuiScreen {
     public int xTravel = 0;
     public int yTravel = 0;
     public int zTravel = 0;
+    public int dimTravel = 0;
 
     private UUID id;
     private int dim;
@@ -57,9 +62,9 @@ public class K9Gui extends GuiScreen {
 
         buttonList.clear();
         buttonList.add(btnConfirm = new GuiButton(BUTTON_CONFIRM,(guiLastX - guiWidth/2)- btnWidth/2,(guiLastY - 10) - btnHeight,btnWidth,btnHeight,btnConfirmText));
-        xField = new GuiTextField(X_FIELD,fontRenderer,centerX + 20,centerY + 20,btnWidth,btnHeight);
-        yField = new GuiTextField(Y_FIELD,fontRenderer,centerX + 20,centerY + 30 + btnHeight,btnWidth,btnHeight);
-        zField = new GuiTextField(Z_FIELD,fontRenderer,centerX + 20,centerY + 40 + btnHeight * 2,btnWidth,btnHeight);
+        xField = new GuiTextField(X_FIELD,fontRenderer,centerX + 20,centerY + 20,fieldWidth,fieldHeight);
+        yField = new GuiTextField(Y_FIELD,fontRenderer,centerX + 20,centerY + 30 + fieldHeight,fieldWidth,fieldHeight);
+        zField = new GuiTextField(Z_FIELD,fontRenderer,centerX + 20,centerY + 40 + fieldHeight * 2,fieldWidth,fieldHeight);
 
         super.initGui();
     }
@@ -75,8 +80,9 @@ public class K9Gui extends GuiScreen {
                             BlockPos tardisBP = new BlockPos(TardisHelper.getTardis(id));
                             BlockPos destination = new BlockPos(xTravel,yTravel,zTravel);
 
-                            TileEntityTardis tardis = (TileEntityTardis)mc.world.getTileEntity(tardisBP);
-                            tardis.setDesination(destination,0);
+
+                            K9.NETWORK.sendToServer(new MessageK9Piloting(destination,dimTravel,tardisBP));
+                            Minecraft.getMinecraft().displayGuiScreen(null);
                         }
                         else{
                             sendChatMessage("You must be in the TARDIS to set coordinates with K9");
@@ -107,9 +113,10 @@ public class K9Gui extends GuiScreen {
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         drawTexturedModalRect(centerX,centerY,0,0,guiWidth,guiHeight);
         drawCenteredString(Minecraft.getMinecraft().fontRenderer,"K9 Dashboard",width/2,centerY + 10,0xFFFFFF);
+
         fontRenderer.drawString("X :",centerX+5,centerY + 20,0xFFFFFF);
-        fontRenderer.drawString("Y :",centerX+5,centerY + 30 + btnHeight,0xFFFFFF);
-        fontRenderer.drawString("Z :",centerX+5,centerY + 40 + btnHeight * 2,0xFFFFFF);
+        fontRenderer.drawString("Y :",centerX+5,centerY + 30 + fieldHeight,0xFFFFFF);
+        fontRenderer.drawString("Z :",centerX+5,centerY + 40 + fieldHeight * 2,0xFFFFFF);
 
         //super.drawScreen(mouseX, mouseY, partialTicks);
         btnConfirm.drawButton(mc,mouseX,mouseY,0F);
