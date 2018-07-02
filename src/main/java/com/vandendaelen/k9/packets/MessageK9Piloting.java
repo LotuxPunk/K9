@@ -16,15 +16,17 @@ import net.tardis.mod.common.tileentity.TileEntityTardis;
 
 public class MessageK9Piloting implements IMessage {
 
-    private static BlockPos destination;
-    private static BlockPos tardisBP;
-    private static int dimension;
+    private static BlockPos destination= BlockPos.ORIGIN;
+    private static BlockPos tardisBP = BlockPos.ORIGIN;
+    private static int dimension = 0;
 
+    public MessageK9Piloting() {
+    }
 
     public MessageK9Piloting(BlockPos destination, int dim, BlockPos tBP) {
-        this.destination = destination;
+        this.destination = destination.toImmutable();
         this.dimension = dim;
-        this.tardisBP = tBP;
+        this.tardisBP = tBP.toImmutable();
     }
 
     @Override
@@ -50,9 +52,10 @@ public class MessageK9Piloting implements IMessage {
                 public void run() {
                     WorldServer ws = DimensionManager.getWorld(TDimensions.id);
 
-                    TileEntityTardis tardis = (TileEntityTardis)ws.getTileEntity(tardisBP);
-                    tardis.setDesination(destination,dimension);
-                    tardis.startFlight();
+                    TileEntity te = ws.getTileEntity(tardisBP);
+                    if (te instanceof TileEntityTardis){
+                        ((TileEntityTardis) te).setDesination(destination,dimension);
+                    }
                 }
             });
             return null;
