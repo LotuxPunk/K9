@@ -2,6 +2,7 @@ package com.vandendaelen.k9.entities;
 
 import com.vandendaelen.k9.gui.K9Gui;
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
+import com.vandendaelen.k9.utils.helpers.PlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -15,9 +16,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.UUID;
 
 
 public class EntityK9 extends EntityWolf implements IRangedAttackMob {
@@ -59,8 +61,15 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
     @SideOnly(Side.CLIENT)
     @Override
     public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
-        Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension));
-        return EnumActionResult.SUCCESS;
+        UUID ownerID = getOwnerId();
+        if(player.getUniqueID() == ownerID){
+            Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension));
+            return EnumActionResult.SUCCESS;
+        }
+        else{
+            PlayerHelper.sendMessage(player,"Isn't your K9 !",true);
+            return EnumActionResult.FAIL;
+        }
     }
 
     @Override

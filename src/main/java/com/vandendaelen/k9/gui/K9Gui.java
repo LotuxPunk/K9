@@ -1,6 +1,5 @@
 package com.vandendaelen.k9.gui;
 
-import com.mojang.authlib.GameProfile;
 import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.packets.MessageK9Piloting;
 import com.vandendaelen.k9.utils.Reference;
@@ -12,7 +11,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.Loader;
 import net.tardis.mod.common.dimensions.TDimensions;
-import net.tardis.mod.common.tileentity.TileEntityTardis;
 import net.tardis.mod.util.helpers.TardisHelper;
 
 import java.io.IOException;
@@ -112,7 +110,7 @@ public class K9Gui extends GuiScreen {
         drawDefaultBackground();
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         drawTexturedModalRect(centerX,centerY,0,0,guiWidth,guiHeight);
-        drawCenteredString(Minecraft.getMinecraft().fontRenderer,"K9 Dashboard",width/2,centerY + 10,0xFFFFFF);
+        drawCenteredString(Minecraft.getMinecraft().fontRenderer,"K9's Dashboard",width/2,centerY + 10,0xFFFFFF);
 
         fontRenderer.drawString("X :",centerX+5,centerY + 20,0xFFFFFF);
         fontRenderer.drawString("Y :",centerX+5,centerY + 30 + fieldHeight,0xFFFFFF);
