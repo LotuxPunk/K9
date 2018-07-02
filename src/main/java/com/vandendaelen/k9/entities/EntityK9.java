@@ -62,7 +62,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
     @Override
     public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
         UUID ownerID = getOwnerId();
-        if(player.getUniqueID() == ownerID){
+        if(player.getUniqueID().equals(ownerID)){
             Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension));
             return EnumActionResult.SUCCESS;
         }
