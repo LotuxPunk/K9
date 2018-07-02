@@ -6,7 +6,7 @@
   "version": "0.7",
   "mcversion": "1.12.2",
   "url": "https://github.com/LotuxPunk/K9",
-  "updateUrl": "",
+  "updateUrl": "https://raw.githubusercontent.com/LotuxPunk/K9/master/update.json",
   "authorList": ["LotuxPunk"],
   "credits": "Thanks to Sub (author of Weepings Angels) and Spectre (author of the New TARDIS Mod) for theirs advices and patience! Many thanks to VampireRedEye for K9's Model !",
   "logoFile": "",
