@@ -1,12 +1,13 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/k9-mod",
   "promos": {
-    "1.12.2-latest": "0.7.1",
-    "1.12.2-recommended": "0.7.1"
+    "1.12.2-latest": "0.7.2",
+    "1.12.2-recommended": "0.7.2"
   },
   "1.12.2": {
     "0.6": "New model for K9",
     "0.7": "Integration of TARDIS Mod",
-    "0.7.1": "Update detector"
+    "0.7.1": "Update detector",
+    "0.7.2":"Fix crash at launch"
   }
 }
