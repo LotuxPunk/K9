@@ -6,6 +6,8 @@ public class Reference {
     public static final String VERSION = "0.7.1";
     public static final String DEPENDENCIES = "required:forge@[14.23.4.2725,)";
 
+    public static final String UPDATE_JSON = "https://raw.githubusercontent.com/LotuxPunk/K9/master/update.json";
+
     public static final String CLIENT_PROXY = "com.vandendaelen.k9.proxy.ClientProxy";
     public static final String SERVER_PROXY = "com.vandendaelen.k9.proxy.ServerProxy";
 
