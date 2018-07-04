@@ -19,5 +19,10 @@
     "result":{
         "item":"k9:spawner_k9",
         "count":1
-    }
+    },
+    "conditions": [
+        {
+            "type": "K9:IsTARDISModNotLoaded"
+        }
+    ]
 }
