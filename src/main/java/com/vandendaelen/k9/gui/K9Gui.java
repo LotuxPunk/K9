@@ -7,8 +7,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.tardis.mod.common.dimensions.TDimensions;
 import net.tardis.mod.util.helpers.TardisHelper;
@@ -26,13 +29,16 @@ public class K9Gui extends GuiScreen {
     private final int fieldHeight = 10;
     private final int fieldWidth = 80;
     private final String btnConfirmText = "Allons-y !";
+    private final String btnContainerText = "Inventory";
 
     public GuiButton btnConfirm;
+    public GuiButton btnContainer;
     public GuiTextField xField;
     public GuiTextField yField;
     public GuiTextField zField;
 
     public final int BUTTON_CONFIRM = 0;
+    public final int BUTTON_CONTAINER = 1;
 
     public final int X_FIELD = 0;
     public final int Y_FIELD = 1;
@@ -45,10 +51,17 @@ public class K9Gui extends GuiScreen {
 
     private UUID id;
     private int dim;
+    private EntityPlayer player;
+    private World world;
+    private BlockPos pos;
 
-    public K9Gui(UUID id, int dim) {
+    public K9Gui(UUID id, int dim, EntityPlayer p, World w, BlockPos po) {
         this.id = id;
         this.dim = dim;
+        this.player = p;
+        this.world = w;
+        this.pos = po;
+
     }
 
     @Override
@@ -60,6 +73,7 @@ public class K9Gui extends GuiScreen {
 
         buttonList.clear();
         buttonList.add(btnConfirm = new GuiButton(BUTTON_CONFIRM,(guiLastX - guiWidth/2)- btnWidth/2,(guiLastY - 10) - btnHeight,btnWidth,btnHeight,btnConfirmText));
+        buttonList.add(btnContainer = new GuiButton(BUTTON_CONTAINER,(guiLastX-guiWidth/2)-btnWidth/2,(guiLastY-10)- btnHeight*2,btnWidth, btnHeight, btnContainerText));
         xField = new GuiTextField(X_FIELD,fontRenderer,centerX + 20,centerY + 20,fieldWidth,fieldHeight);
         yField = new GuiTextField(Y_FIELD,fontRenderer,centerX + 20,centerY + 30 + fieldHeight,fieldWidth,fieldHeight);
         zField = new GuiTextField(Z_FIELD,fontRenderer,centerX + 20,centerY + 40 + fieldHeight * 2,fieldWidth,fieldHeight);
@@ -78,7 +92,6 @@ public class K9Gui extends GuiScreen {
                             BlockPos tardisBP = new BlockPos(TardisHelper.getTardis(id));
                             BlockPos destination = new BlockPos(xTravel,yTravel,zTravel);
 
-
                             K9.NETWORK.sendToServer(new MessageK9Piloting(destination,dimTravel,tardisBP));
                             Minecraft.getMinecraft().displayGuiScreen(null);
                         }
@@ -95,6 +108,9 @@ public class K9Gui extends GuiScreen {
                     sendChatMessage("TARDIS MOD not found",false);
                 }
 
+                break;
+            case BUTTON_CONTAINER:
+                player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, pos.getX(), pos.getY(), pos.getZ());
                 break;
             default:
                 break;
@@ -118,6 +134,7 @@ public class K9Gui extends GuiScreen {
 
         //super.drawScreen(mouseX, mouseY, partialTicks);
         btnConfirm.drawButton(mc,mouseX,mouseY,0F);
+        btnContainer.drawButton(mc,mouseX,mouseY,0F);
 
         xField.drawTextBox();
         yField.drawTextBox();

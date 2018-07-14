@@ -1,8 +1,10 @@
 package com.vandendaelen.k9.entities;
 
 import com.vandendaelen.k9.gui.K9Gui;
+import com.vandendaelen.k9.objects.tilesentities.K9ContainerTileEntity;
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
@@ -10,6 +12,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathNodeType;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -19,10 +22,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 
-public class EntityK9 extends EntityWolf implements IRangedAttackMob {
+public class EntityK9 extends EntityWolf implements IRangedAttackMob, ITileEntityProvider {
 
     public EntityK9(World worldIn) {
         super(worldIn);
@@ -63,7 +67,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
     public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
         UUID ownerID = getOwnerId();
         if(player.getUniqueID().equals(ownerID)){
-            Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension));
+            Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension,player, world, this.getPosition()));
             return EnumActionResult.SUCCESS;
         }
         else{
@@ -116,5 +120,12 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
     @Override
     protected boolean canDespawn() {
         return false;
+    }
+
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(World worldIn, int meta) {
+        return new K9ContainerTileEntity();
     }
 }

@@ -53,6 +53,8 @@ public class K9 {
         System.out.println(Reference.MODID + " : init");
         RegistryHandler.initRegisteries();
 
+        proxy.init(e);
+
         K9Recipes.init();
 
         GameRegistry.registerWorldGenerator(new OreGen(), 0);

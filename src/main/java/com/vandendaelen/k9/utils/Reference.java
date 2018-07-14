@@ -15,4 +15,6 @@ public class Reference {
     public static final int ENTITY_K9_RAY = 43;
 
     public static final String TARDIS_MODID = "tardis";
+
+    public static final int GUI_ID_CONTAINER = 1;
 }
