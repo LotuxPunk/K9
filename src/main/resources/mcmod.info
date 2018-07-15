@@ -3,7 +3,7 @@
   "modid": "k9",
   "name": "K9 Mod",
   "description": "K9, the robot dog of the Doctor !",
-  "version": "0.7.3",
+  "version": "0.8",
   "mcversion": "1.12.2",
   "url": "https://github.com/LotuxPunk/K9",
   "updateUrl": "https://raw.githubusercontent.com/LotuxPunk/K9/master/update.json",

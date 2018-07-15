@@ -1,14 +1,15 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/k9-mod",
   "promos": {
-    "1.12.2-latest": "0.7.3",
-    "1.12.2-recommended": "0.7.3"
+    "1.12.2-latest": "0.8",
+    "1.12.2-recommended": "0.8"
   },
   "1.12.2": {
     "0.6": "New model for K9",
     "0.7": "Integration of TARDIS Mod",
     "0.7.1": "Update detector",
     "0.7.2":"Fix crash at launch",
-    "0.7.3":"Fix bug where a random player can access at your K9's Dashboard"
+    "0.7.3":"Fix bug where a random player can access at your K9's Dashboard",
+    "0.8":"Adding an inventory to K9"
   }
 }
