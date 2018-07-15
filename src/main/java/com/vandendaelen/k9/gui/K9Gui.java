@@ -1,23 +1,25 @@
 package com.vandendaelen.k9.gui;
 
+import java.io.IOException;
+import java.util.UUID;
+
 import com.vandendaelen.k9.K9;
+import com.vandendaelen.k9.entities.EntityK9;
+import com.vandendaelen.k9.init.K9Entity;
 import com.vandendaelen.k9.packets.MessageK9Piloting;
 import com.vandendaelen.k9.utils.Reference;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.tardis.mod.common.dimensions.TDimensions;
 import net.tardis.mod.util.helpers.TardisHelper;
-
-import java.io.IOException;
-import java.util.UUID;
 
 public class K9Gui extends GuiScreen {
 
@@ -54,14 +56,16 @@ public class K9Gui extends GuiScreen {
     private EntityPlayer player;
     private World world;
     private BlockPos pos;
+    private EntityK9 entity;
 
-    public K9Gui(UUID id, int dim, EntityPlayer p, World w, BlockPos po) {
+    public K9Gui(UUID id, int dim, EntityPlayer p, World w, BlockPos po, EntityK9 entity) {
         this.id = id;
         this.dim = dim;
         this.player = p;
         this.world = w;
         this.pos = po;
-
+        
+        this.entity = entity;
     }
 
     @Override
@@ -110,7 +114,7 @@ public class K9Gui extends GuiScreen {
 
                 break;
             case BUTTON_CONTAINER:
-                player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, pos.getX(), pos.getY(), pos.getZ());
+                player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, entity.getEntityId(), 0, 0);
                 break;
             default:
                 break;
