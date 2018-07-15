@@ -8,7 +8,7 @@ import com.vandendaelen.k9.entities.EntityK9;
 import com.vandendaelen.k9.init.K9Entity;
 import com.vandendaelen.k9.packets.MessageK9Piloting;
 import com.vandendaelen.k9.utils.Reference;
-
+import com.vandendaelen.k9.utils.helpers.PlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -100,16 +100,16 @@ public class K9Gui extends GuiScreen {
                             Minecraft.getMinecraft().displayGuiScreen(null);
                         }
                         else{
-                            sendChatMessage("You must be in the TARDIS to set coordinates with K9");
+                            PlayerHelper.sendMessage(player,"You must be in the TARDIS to set coordinates with K9",true);
                         }
                     }
                     else{
-                        sendChatMessage("You must own a TARDIS before",false);
+                        PlayerHelper.sendMessage(player,"You must own a TARDIS before",true);
                     }
 
                 }
                 else{
-                    sendChatMessage("TARDIS MOD not found",false);
+                    PlayerHelper.sendMessage(player,"TARDIS MOD not found",true);
                 }
 
                 break;
