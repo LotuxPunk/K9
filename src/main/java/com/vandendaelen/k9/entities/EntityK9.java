@@ -1,32 +1,50 @@
 package com.vandendaelen.k9.entities;
 
+import java.util.UUID;
+
 import com.vandendaelen.k9.gui.K9Gui;
-import com.vandendaelen.k9.objects.tilesentities.K9ContainerTileEntity;
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
-import net.minecraft.block.ITileEntityProvider;
+
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IRangedAttackMob;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackRanged;
+import net.minecraft.entity.ai.EntityAIBeg;
+import net.minecraft.entity.ai.EntityAIFollowOwner;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAILeapAtTarget;
+import net.minecraft.entity.ai.EntityAILookIdle;
+import net.minecraft.entity.ai.EntityAIMate;
+import net.minecraft.entity.ai.EntityAIMoveTowardsTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
+import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWander;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
-import javax.annotation.Nullable;
-import java.util.UUID;
 
-
-public class EntityK9 extends EntityWolf implements IRangedAttackMob, ITileEntityProvider {
+public class EntityK9 extends EntityWolf implements IRangedAttackMob {
 
     public EntityK9(World worldIn) {
         super(worldIn);
@@ -67,7 +85,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, ITileEntit
     public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
         UUID ownerID = getOwnerId();
         if(player.getUniqueID().equals(ownerID)){
-            Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension,player, world, this.getPosition()));
+            Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension,player, world, this.getPosition(), this));
             return EnumActionResult.SUCCESS;
         }
         else{
@@ -122,10 +140,54 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, ITileEntit
         return false;
     }
 
+    
+    public static final int SIZE = 9;
 
-    @Nullable
+    private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            
+        }
+    };
+
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new K9ContainerTileEntity();
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        if (compound.hasKey("items")) {
+            itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
+        }
     }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setTag("items", itemStackHandler.serializeNBT());
+        return compound;
+    }
+
+    public boolean canInteractWith(EntityPlayer playerIn) {
+        return playerIn.getDistanceSq(this.getPosition()) <= 64D;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return true;
+        }
+        return super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler);
+        }
+        return super.getCapability(capability, facing);
+    }
+
+//    @Nullable
+//    @Override
+//    public TileEntity createNewTileEntity(World worldIn, int meta) {
+//        return new K9ContainerTileEntity();
+//    }
 }

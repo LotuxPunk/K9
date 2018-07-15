@@ -1,6 +1,9 @@
 package com.vandendaelen.k9.objects.containers;
 
-import com.vandendaelen.k9.objects.tilesentities.K9ContainerTileEntity;
+import javax.annotation.Nullable;
+
+import com.vandendaelen.k9.entities.EntityK9;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -10,13 +13,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-import javax.annotation.Nullable;
-
 public class K9Container extends Container {
-    private K9ContainerTileEntity te;
+    private EntityK9 entity;
 
-    public K9Container(IInventory playerInventory, K9ContainerTileEntity te) {
-        this.te = te;
+    public K9Container(IInventory playerInventory, EntityK9 entity) {
+    	this.entity = entity;
         addOwnSlots();
         addPlayerSlots(playerInventory);
     }
@@ -40,7 +41,7 @@ public class K9Container extends Container {
     }
 
     private void addOwnSlots() {
-        IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        IItemHandler itemHandler = this.entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         int x = 9;
         int y = 6;
 
@@ -63,11 +64,11 @@ public class K9Container extends Container {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index < K9ContainerTileEntity.SIZE) {
-                if (!this.mergeItemStack(itemstack1, K9ContainerTileEntity.SIZE, this.inventorySlots.size(), true)) {
+            if (index < EntityK9.SIZE) {
+                if (!this.mergeItemStack(itemstack1, EntityK9.SIZE, this.inventorySlots.size(), true)) {
                     return null;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 0, K9ContainerTileEntity.SIZE, false)) {
+            } else if (!this.mergeItemStack(itemstack1, 0, EntityK9.SIZE, false)) {
                 return null;
             }
 
@@ -83,6 +84,6 @@ public class K9Container extends Container {
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
-        return te.canInteractWith(playerIn);
+        return entity.canInteractWith(playerIn);
     }
 }

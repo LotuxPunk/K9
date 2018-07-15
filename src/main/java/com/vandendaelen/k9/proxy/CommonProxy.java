@@ -1,7 +1,7 @@
 package com.vandendaelen.k9.proxy;
 
-import com.vandendaelen.k9.objects.tilesentities.K9ContainerTileEntity;
-import com.vandendaelen.k9.utils.Reference;
+import static com.vandendaelen.k9.K9.instance;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -10,9 +10,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import static com.vandendaelen.k9.K9.instance;
 
 @Mod.EventBusSubscriber
 public class CommonProxy {
@@ -31,6 +28,5 @@ public class CommonProxy {
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        GameRegistry.registerTileEntity(K9ContainerTileEntity.class, Reference.MODID + "_k9containerblock");
     }
 }
