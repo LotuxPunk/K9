@@ -21,6 +21,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.tardis.mod.common.dimensions.TDimensions;
 import net.tardis.mod.util.helpers.TardisHelper;
 
+import static com.sun.glass.events.KeyEvent.VK_BACKSPACE;
 import static java.awt.Event.BACK_SPACE;
 import static java.awt.Event.DELETE;
 import static java.awt.Event.ESCAPE;
@@ -164,18 +165,29 @@ public class K9Gui extends GuiScreen {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if(Character.isDigit(typedChar) || keyCode == BACK_SPACE || keyCode == ESCAPE || keyCode == DELETE){
-            if(xField.getText().length() < 9 && yField.getText().length() < 9 && zField.getText().length() < 9){
-                xField.textboxKeyTyped(typedChar,keyCode);
-                yField.textboxKeyTyped(typedChar,keyCode);
-                zField.textboxKeyTyped(typedChar,keyCode);
+        if(Character.isDigit(typedChar) || typedChar == VK_BACKSPACE || typedChar == ESCAPE || typedChar == DELETE){
+            xField.textboxKeyTyped(typedChar,keyCode);
+            yField.textboxKeyTyped(typedChar,keyCode);
+            zField.textboxKeyTyped(typedChar,keyCode);
 
-                xTravel = updateField(xField);
-                yTravel = updateField(yField);
-                zTravel = updateField(zField);
-
-                super.keyTyped(typedChar, keyCode);
+            if(xField.getText().length() > 9){
+                xField.setText(xField.getText().substring(0, xField.getText().length() - 1));
+            } else{
+                if(yField.getText().length() > 9){
+                    yField.setText(yField.getText().substring(0, yField.getText().length() - 1));
+                }
+                else {
+                    if (zField.getText().length() > 9) {
+                        zField.setText(zField.getText().substring(0, zField.getText().length() - 1));
+                    }
+                }
             }
+
+            xTravel = updateField(xField);
+            yTravel = updateField(yField);
+            zTravel = updateField(zField);
+
+            super.keyTyped(typedChar, keyCode);
         }
     }
 
