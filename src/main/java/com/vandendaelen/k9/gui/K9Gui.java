@@ -1,11 +1,7 @@
 package com.vandendaelen.k9.gui;
 
-import java.io.IOException;
-import java.util.UUID;
-
 import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.entities.EntityK9;
-import com.vandendaelen.k9.init.K9Entity;
 import com.vandendaelen.k9.packets.MessageK9Piloting;
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
@@ -21,10 +17,10 @@ import net.minecraftforge.fml.common.Loader;
 import net.tardis.mod.common.dimensions.TDimensions;
 import net.tardis.mod.util.helpers.TardisHelper;
 
-import static com.sun.glass.events.KeyEvent.VK_BACKSPACE;
-import static java.awt.Event.BACK_SPACE;
-import static java.awt.Event.DELETE;
-import static java.awt.Event.ESCAPE;
+import java.io.IOException;
+import java.util.UUID;
+
+import static java.awt.Event.*;
 
 public class K9Gui extends GuiScreen {
 
@@ -165,7 +161,7 @@ public class K9Gui extends GuiScreen {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if(Character.isDigit(typedChar) || typedChar == VK_BACKSPACE || typedChar == ESCAPE || typedChar == DELETE){
+        if(Character.isDigit(typedChar) || typedChar == BACK_SPACE || typedChar == ESCAPE || typedChar == DELETE){
             xField.textboxKeyTyped(typedChar,keyCode);
             yField.textboxKeyTyped(typedChar,keyCode);
             zField.textboxKeyTyped(typedChar,keyCode);
