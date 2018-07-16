@@ -21,6 +21,10 @@ import net.minecraftforge.fml.common.Loader;
 import net.tardis.mod.common.dimensions.TDimensions;
 import net.tardis.mod.util.helpers.TardisHelper;
 
+import static java.awt.Event.BACK_SPACE;
+import static java.awt.Event.DELETE;
+import static java.awt.Event.ESCAPE;
+
 public class K9Gui extends GuiScreen {
 
     public final ResourceLocation texture = new ResourceLocation(Reference.MODID,"textures/gui/gui.png");
@@ -160,16 +164,18 @@ public class K9Gui extends GuiScreen {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        if(Character.isDigit(typedChar)){
-            xField.textboxKeyTyped(typedChar,keyCode);
-            yField.textboxKeyTyped(typedChar,keyCode);
-            zField.textboxKeyTyped(typedChar,keyCode);
+        if(Character.isDigit(typedChar) || keyCode == BACK_SPACE || keyCode == ESCAPE || keyCode == DELETE){
+            if(xField.getText().length() < 9 && yField.getText().length() < 9 && zField.getText().length() < 9){
+                xField.textboxKeyTyped(typedChar,keyCode);
+                yField.textboxKeyTyped(typedChar,keyCode);
+                zField.textboxKeyTyped(typedChar,keyCode);
 
-            xTravel = updateField(xField);
-            yTravel = updateField(yField);
-            zTravel = updateField(zField);
+                xTravel = updateField(xField);
+                yTravel = updateField(yField);
+                zTravel = updateField(zField);
 
-            super.keyTyped(typedChar, keyCode);
+                super.keyTyped(typedChar, keyCode);
+            }
         }
     }
 
