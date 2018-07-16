@@ -10,6 +10,7 @@
     "0.7.1": "Update detector",
     "0.7.2":"Fix crash at launch",
     "0.7.3":"Fix bug where a random player can access at your K9's Dashboard",
-    "0.8":"Adding an inventory to K9"
+    "0.8":"Adding an inventory to K9",
+    "0.8.1":"Fix crash with K9 Gui"
   }
 }

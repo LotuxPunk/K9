@@ -160,15 +160,17 @@ public class K9Gui extends GuiScreen {
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
-        xField.textboxKeyTyped(typedChar,keyCode);
-        yField.textboxKeyTyped(typedChar,keyCode);
-        zField.textboxKeyTyped(typedChar,keyCode);
+        if(Character.isDigit(typedChar)){
+            xField.textboxKeyTyped(typedChar,keyCode);
+            yField.textboxKeyTyped(typedChar,keyCode);
+            zField.textboxKeyTyped(typedChar,keyCode);
 
-        xTravel = updateField(xField);
-        yTravel = updateField(yField);
-        zTravel = updateField(zField);
+            xTravel = updateField(xField);
+            yTravel = updateField(yField);
+            zTravel = updateField(zField);
 
-        super.keyTyped(typedChar, keyCode);
+            super.keyTyped(typedChar, keyCode);
+        }
     }
 
     private int updateField(GuiTextField field){
