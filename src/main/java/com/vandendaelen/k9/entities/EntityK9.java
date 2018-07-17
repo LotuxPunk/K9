@@ -29,6 +29,8 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
@@ -59,7 +61,6 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
         enablePersistence();
 
         this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(3, new EntityAILeapAtTarget(this, 0.4F));
         this.tasks.addTask(4, new EntityAIAttackRanged(this, 0.5D, 10, 25F));
         this.targetTasks.addTask(4, new EntityAIMoveTowardsTarget(this, 1.0D, 20));
         this.tasks.addTask(3, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
@@ -92,6 +93,13 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
             PlayerHelper.sendMessage(player,"Isn't your K9 !",true);
             return EnumActionResult.FAIL;
         }
+    }
+
+    @Override
+    protected PathNavigate createNavigator(World worldIn) {
+        final PathNavigateGround navigator = new PathNavigateGround(this, worldIn);
+        navigator.setCanSwim(true);
+        return navigator;
     }
 
     @Override
