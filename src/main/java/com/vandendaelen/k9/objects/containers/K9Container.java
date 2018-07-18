@@ -64,11 +64,11 @@ public class K9Container extends Container {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index < EntityK9.SIZE) {
-                if (!this.mergeItemStack(itemstack1, EntityK9.SIZE, this.inventorySlots.size(), true)) {
+            if (index < EntityK9.INVENTORY_SIZE) {
+                if (!this.mergeItemStack(itemstack1, EntityK9.INVENTORY_SIZE, this.inventorySlots.size(), true)) {
                     return null;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 0, EntityK9.SIZE, false)) {
+            } else if (!this.mergeItemStack(itemstack1, 0, EntityK9.INVENTORY_SIZE, false)) {
                 return null;
             }
 

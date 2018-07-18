@@ -15,7 +15,6 @@ import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIBeg;
 import net.minecraft.entity.ai.EntityAIFollowOwner;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAILookIdle;
 import net.minecraft.entity.ai.EntityAIMate;
 import net.minecraft.entity.ai.EntityAIMoveTowardsTarget;
@@ -40,13 +39,22 @@ import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 
-public class EntityK9 extends EntityWolf implements IRangedAttackMob {
+public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergyStorage {
+
+    private int battery = 0;
+
+    public static final int INVENTORY_SIZE = 9;
+
+    private final int ENERGY_MAX = 100000;
+    private final int ENERGY_MIN = 0;
+    private final int ENERGY_LOW = ENERGY_MAX / 100 * 20;
 
     public EntityK9(World worldIn) {
         super(worldIn);
@@ -128,7 +136,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
         Vec3d look = target.getPositionVector().subtract(this.getPositionVector());
         EntityK9Ray ray = new EntityK9Ray(world,this);
 
-        x = posX+this.getLookVec().x;
+        x = posX + this.getLookVec().x;
         y = posY + this.getEyeHeight();
         z = posZ + this.getLookVec().z;
 
@@ -149,9 +157,9 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
     }
 
     
-    public static final int SIZE = 9;
+    //Inventory functions
 
-    private ItemStackHandler itemStackHandler = new ItemStackHandler(SIZE) {
+    private ItemStackHandler itemStackHandler = new ItemStackHandler(INVENTORY_SIZE) {
         @Override
         protected void onContentsChanged(int slot) {
             
@@ -193,9 +201,38 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob {
         return super.getCapability(capability, facing);
     }
 
-//    @Nullable
-//    @Override
-//    public TileEntity createNewTileEntity(World worldIn, int meta) {
-//        return new K9ContainerTileEntity();
-//    }
+    //Energy functions
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        if(ENERGY_MAX - battery >= maxReceive){
+            return maxReceive;
+        }
+        return ENERGY_MAX - battery;
+    }
+
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) {
+        return 0;
+    }
+
+    @Override
+    public int getEnergyStored() {
+        return battery;
+    }
+
+    @Override
+    public int getMaxEnergyStored() {
+        return ENERGY_MAX;
+    }
+
+    @Override
+    public boolean canExtract() {
+        return false;
+    }
+
+    @Override
+    public boolean canReceive() {
+        return ENERGY_MAX - battery > 0;
+    }
 }
