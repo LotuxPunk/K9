@@ -26,7 +26,7 @@ public class K9Container extends Container {
         // Slots for the main inventory
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
-                int x = 9 + col * 18;
+                int x = 10 + col * 18;
                 int y = row * 18 + 70;
                 this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 10, x, y));
             }

@@ -1,29 +1,14 @@
 package com.vandendaelen.k9.entities;
 
-import java.util.UUID;
-
-import com.vandendaelen.k9.gui.K9Gui;
+import com.vandendaelen.k9.K9;
+import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackRanged;
-import net.minecraft.entity.ai.EntityAIBeg;
-import net.minecraft.entity.ai.EntityAIFollowOwner;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAIMate;
-import net.minecraft.entity.ai.EntityAIMoveTowardsTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
-import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,11 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.*;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -44,6 +25,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+
+import java.util.UUID;
 
 
 public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergyStorage {
@@ -55,6 +38,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     private final int ENERGY_MAX = 100000;
     private final int ENERGY_MIN = 0;
     private final int ENERGY_LOW = ENERGY_MAX / 100 * 20;
+    private final int ENERGY_RAY_CONSUMPTION = 1500;
 
     public EntityK9(World worldIn) {
         super(worldIn);
@@ -94,7 +78,8 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
         UUID ownerID = getOwnerId();
         if(player.getUniqueID().equals(ownerID)){
-            Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension,player, world, this.getPosition(), this));
+            //Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension,player, world, this.getPosition(), this));
+            player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, this.getEntityId(), 0, 0);
             return EnumActionResult.SUCCESS;
         }
         else{
@@ -133,17 +118,24 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
         double x, y, z;
-        Vec3d look = target.getPositionVector().subtract(this.getPositionVector());
-        EntityK9Ray ray = new EntityK9Ray(world,this);
+        Vec3d look;
+        if(battery >= ENERGY_RAY_CONSUMPTION){
+            look = target.getPositionVector().subtract(this.getPositionVector());
+            EntityK9Ray ray = new EntityK9Ray(world,this);
 
-        x = posX + this.getLookVec().x;
-        y = posY + this.getEyeHeight();
-        z = posZ + this.getLookVec().z;
+            x = posX + this.getLookVec().x;
+            y = posY + this.getEyeHeight();
+            z = posZ + this.getLookVec().z;
 
-        ray.setPosition(x,y,z);
-        world.spawnEntity(ray);
+            ray.setPosition(x,y,z);
+            world.spawnEntity(ray);
 
-        //Todo Add sound on fire
+            //Todo Add sound on fire
+        }
+        else {
+            //Todo Add a sound when K9 can't shoot
+        }
+
     }
 
     @Override

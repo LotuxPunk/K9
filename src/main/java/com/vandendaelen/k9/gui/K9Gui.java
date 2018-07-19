@@ -7,9 +7,10 @@ import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,15 +23,15 @@ import java.util.UUID;
 
 import static java.awt.Event.*;
 
-public class K9Gui extends GuiScreen {
+public class K9Gui extends GuiContainer {
 
-    public final ResourceLocation texture = new ResourceLocation(Reference.MODID,"textures/gui/gui.png");
-    private final int guiHeight = 166;
-    private final int guiWidth = 248;
+    public final ResourceLocation texture = new ResourceLocation(Reference.MODID,"textures/gui/k9container.png");
+    private final int guiHeight = 152;
+    private final int guiWidth = 180;
     private final int btnHeight = 20;
-    private final int btnWidth = 100;
+    private final int btnWidth = 60;
     private final int fieldHeight = 10;
-    private final int fieldWidth = 80;
+    private final int fieldWidth = 50;
     private final String btnConfirmText = "Allons-y !";
     private final String btnContainerText = "Inventory";
 
@@ -56,15 +57,17 @@ public class K9Gui extends GuiScreen {
     private int dim;
     private EntityPlayer player;
     private World world;
-    private BlockPos pos;
     private EntityK9 entity;
 
-    public K9Gui(UUID id, int dim, EntityPlayer p, World w, BlockPos po, EntityK9 entity) {
-        this.id = id;
-        this.dim = dim;
-        this.player = p;
-        this.world = w;
-        this.pos = po;
+    public K9Gui(Container container, EntityK9 entity, EntityPlayer player, World world) {
+        super(container);
+        this.id = entity.getOwnerId();
+        this.dim = entity.dimension;
+        this.player = player;
+        this.world = world;
+
+        xSize = guiWidth;
+        ySize = guiHeight;
         
         this.entity = entity;
     }
@@ -77,11 +80,11 @@ public class K9Gui extends GuiScreen {
         int guiLastY = (height/2) + guiHeight/2;
 
         buttonList.clear();
-        buttonList.add(btnConfirm = new GuiButton(BUTTON_CONFIRM,(guiLastX - guiWidth/2)- btnWidth/2,(guiLastY - 10) - btnHeight,btnWidth,btnHeight,btnConfirmText));
-        buttonList.add(btnContainer = new GuiButton(BUTTON_CONTAINER,(guiLastX-guiWidth/2)-btnWidth/2,(guiLastY-10)- btnHeight*2,btnWidth, btnHeight, btnContainerText));
-        xField = new GuiTextField(X_FIELD,fontRenderer,centerX + 20,centerY + 20,fieldWidth,fieldHeight);
-        yField = new GuiTextField(Y_FIELD,fontRenderer,centerX + 20,centerY + 30 + fieldHeight,fieldWidth,fieldHeight);
-        zField = new GuiTextField(Z_FIELD,fontRenderer,centerX + 20,centerY + 40 + fieldHeight * 2,fieldWidth,fieldHeight);
+        buttonList.add(btnConfirm = new GuiButton(BUTTON_CONFIRM,guiLastX - 10 - btnWidth,centerY + 25,btnWidth,btnHeight,btnConfirmText));
+        buttonList.add(btnContainer = new GuiButton(BUTTON_CONTAINER,guiLastX -10 - btnWidth,centerY + 25 + btnHeight + 2 ,btnWidth, btnHeight, btnContainerText));
+        xField = new GuiTextField(X_FIELD,fontRenderer,centerX + 20,centerY + 26,fieldWidth,fieldHeight);
+        yField = new GuiTextField(Y_FIELD,fontRenderer,centerX + 20,centerY + 26 + fieldHeight + 5,fieldWidth,fieldHeight);
+        zField = new GuiTextField(Z_FIELD,fontRenderer,centerX + 20,centerY + 26 + fieldHeight * 2 + 10,fieldWidth,fieldHeight);
 
         super.initGui();
     }
@@ -90,7 +93,7 @@ public class K9Gui extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         switch (button.id){
             case BUTTON_CONFIRM:
-                sendChatMessage("x:" + xTravel +", y:" + yTravel +", z:" + zTravel);
+                //sendChatMessage("x:" + xTravel +", y:" + yTravel +", z:" + zTravel);
                 if(Loader.isModLoaded(Reference.TARDIS_MODID)){
                     if (TardisHelper.hasTardis(id)){
                         if (dim == TDimensions.id){
@@ -107,7 +110,6 @@ public class K9Gui extends GuiScreen {
                     else{
                         PlayerHelper.sendMessage(player,"You must own a TARDIS before",true);
                     }
-
                 }
                 else{
                     PlayerHelper.sendMessage(player,"TARDIS MOD not found",true);
@@ -125,25 +127,31 @@ public class K9Gui extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        super.drawScreen(mouseX, mouseY, partialTicks);
         int centerX = (width/2) - guiWidth/2;
         int centerY = (height/2) - guiHeight/2;
 
         drawDefaultBackground();
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         drawTexturedModalRect(centerX,centerY,0,0,guiWidth,guiHeight);
-        drawCenteredString(Minecraft.getMinecraft().fontRenderer,"K9's Dashboard",width/2,centerY + 10,0xFFFFFF);
+        //drawCenteredString(Minecraft.getMinecraft().fontRenderer,"K9's Dashboard",width/2,centerY + 10,0xFFFFFF);
 
-        fontRenderer.drawString("X :",centerX+5,centerY + 20,0xFFFFFF);
-        fontRenderer.drawString("Y :",centerX+5,centerY + 30 + fieldHeight,0xFFFFFF);
-        fontRenderer.drawString("Z :",centerX+5,centerY + 40 + fieldHeight * 2,0xFFFFFF);
+        fontRenderer.drawString("X :",centerX+5,centerY + 26,0xFFFFFF);
+        fontRenderer.drawString("Y :",centerX+5,centerY + 26 + fieldHeight + 5,0xFFFFFF);
+        fontRenderer.drawString("Z :",centerX+5,centerY + 26 + fieldHeight * 2 + 10,0xFFFFFF);
 
-        //super.drawScreen(mouseX, mouseY, partialTicks);
         btnConfirm.drawButton(mc,mouseX,mouseY,0F);
         btnContainer.drawButton(mc,mouseX,mouseY,0F);
 
         xField.drawTextBox();
         yField.drawTextBox();
         zField.drawTextBox();
+    }
+
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        mc.getTextureManager().bindTexture(texture);
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
     }
 
     @Override
