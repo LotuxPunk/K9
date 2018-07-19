@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.tardis.mod.common.dimensions.TDimensions;
 import net.tardis.mod.util.helpers.TardisHelper;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -81,7 +82,7 @@ public class K9Gui extends GuiContainer {
 
         buttonList.clear();
         buttonList.add(btnConfirm = new GuiButton(BUTTON_CONFIRM,guiLastX - 10 - btnWidth,centerY + 25,btnWidth,btnHeight,btnConfirmText));
-        buttonList.add(btnContainer = new GuiButton(BUTTON_CONTAINER,guiLastX -10 - btnWidth,centerY + 25 + btnHeight + 2 ,btnWidth, btnHeight, btnContainerText));
+        //buttonList.add(btnContainer = new GuiButton(BUTTON_CONTAINER,guiLastX -10 - btnWidth,centerY + 25 + btnHeight + 2 ,btnWidth, btnHeight, btnContainerText));
         xField = new GuiTextField(X_FIELD,fontRenderer,centerX + 20,centerY + 26,fieldWidth,fieldHeight);
         yField = new GuiTextField(Y_FIELD,fontRenderer,centerX + 20,centerY + 26 + fieldHeight + 5,fieldWidth,fieldHeight);
         zField = new GuiTextField(Z_FIELD,fontRenderer,centerX + 20,centerY + 26 + fieldHeight * 2 + 10,fieldWidth,fieldHeight);
@@ -127,25 +128,28 @@ public class K9Gui extends GuiContainer {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        drawDefaultBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
         int centerX = (width/2) - guiWidth/2;
         int centerY = (height/2) - guiHeight/2;
+        int guiLastX = (width/2) + guiWidth/2;
+        int guiLastY = (height/2) + guiHeight/2;
 
-        drawDefaultBackground();
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
-        drawTexturedModalRect(centerX,centerY,0,0,guiWidth,guiHeight);
-        //drawCenteredString(Minecraft.getMinecraft().fontRenderer,"K9's Dashboard",width/2,centerY + 10,0xFFFFFF);
+        //drawTexturedModalRect(centerX,centerY,0,0,guiWidth,guiHeight);
+        fontRenderer.drawString("Battery level : "+ entity.getLevelEnergy()+"%",centerX + guiWidth/2 - 10,centerY + 27 + fieldHeight * 2 + 10,Color.red.getRGB(),false);
 
-        fontRenderer.drawString("X :",centerX+5,centerY + 26,0xFFFFFF);
-        fontRenderer.drawString("Y :",centerX+5,centerY + 26 + fieldHeight + 5,0xFFFFFF);
-        fontRenderer.drawString("Z :",centerX+5,centerY + 26 + fieldHeight * 2 + 10,0xFFFFFF);
+        fontRenderer.drawString("X :",centerX+5,centerY + 26,Color.black.getRGB());
+        fontRenderer.drawString("Y :",centerX+5,centerY + 26 + fieldHeight + 5,Color.black.getRGB());
+        fontRenderer.drawString("Z :",centerX+5,centerY + 26 + fieldHeight * 2 + 10,Color.black.getRGB());
 
         btnConfirm.drawButton(mc,mouseX,mouseY,0F);
-        btnContainer.drawButton(mc,mouseX,mouseY,0F);
+        //btnContainer.drawButton(mc,mouseX,mouseY,0F);
 
         xField.drawTextBox();
         yField.drawTextBox();
         zField.drawTextBox();
+
     }
 
     @Override

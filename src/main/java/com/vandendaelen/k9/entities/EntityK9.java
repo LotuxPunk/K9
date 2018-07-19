@@ -12,6 +12,7 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemRedstone;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
@@ -39,6 +40,8 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     private final int ENERGY_MIN = 0;
     private final int ENERGY_LOW = ENERGY_MAX / 100 * 20;
     private final int ENERGY_RAY_CONSUMPTION = 1500;
+
+    private final int REDSTONE_ENERGY_RESTORE = 8000;
 
     public EntityK9(World worldIn) {
         super(worldIn);
@@ -77,15 +80,22 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     @Override
     public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
         UUID ownerID = getOwnerId();
+
+        if(player.getHeldItem(hand).getItem() instanceof ItemRedstone && this.canReceive(REDSTONE_ENERGY_RESTORE)){
+            int stock = player.getHeldItem(hand).getCount();
+            player.getHeldItem(hand).setCount(--stock);
+            addEnergy(REDSTONE_ENERGY_RESTORE);
+            return EnumActionResult.SUCCESS;
+        }
+
         if(player.getUniqueID().equals(ownerID)){
             //Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension,player, world, this.getPosition(), this));
             player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, this.getEntityId(), 0, 0);
             return EnumActionResult.SUCCESS;
         }
-        else{
-            PlayerHelper.sendMessage(player,"Isn't your K9 !",true);
-            return EnumActionResult.FAIL;
-        }
+
+        PlayerHelper.sendMessage(player,"Isn't your K9 !",true);
+        return EnumActionResult.FAIL;
     }
 
     @Override
@@ -118,9 +128,10 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
         double x, y, z;
-        Vec3d look;
+        //Vec3d look;
         if(battery >= ENERGY_RAY_CONSUMPTION){
-            look = target.getPositionVector().subtract(this.getPositionVector());
+            removeEnergy(ENERGY_RAY_CONSUMPTION);
+            //look = target.getPositionVector().subtract(this.getPositionVector());
             EntityK9Ray ray = new EntityK9Ray(world,this);
 
             x = posX + this.getLookVec().x;
@@ -226,5 +237,26 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     @Override
     public boolean canReceive() {
         return ENERGY_MAX - battery > 0;
+    }
+
+    public boolean canReceive(int value) {
+        return ENERGY_MAX - battery > value;
+    }
+
+    public int getLevelEnergy(){
+        double level = (double)battery / ENERGY_MAX;
+        return (int)Math.floor(level * 100);
+    }
+
+    public void addEnergy(int value){
+        this.battery += value;
+    }
+
+    public void removeEnergy(int value){
+        this.battery -= value;
+        //debug
+        PlayerHelper.sendMessage((EntityPlayer)this.getOwner(),battery+"",false);
+        PlayerHelper.sendMessage((EntityPlayer)this.getOwner(),getLevelEnergy()+"%",false);
+
     }
 }
