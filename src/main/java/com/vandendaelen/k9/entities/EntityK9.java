@@ -14,6 +14,9 @@ import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemRedstone;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
@@ -32,7 +35,7 @@ import java.util.UUID;
 
 public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergyStorage {
 
-    private int battery = 0;
+    private static final DataParameter<Integer> BATTERY = EntityDataManager.createKey(EntityK9.class,DataSerializers.VARINT);
 
     public static final int INVENTORY_SIZE = 9;
 
@@ -68,6 +71,12 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityMob.class, false));
+    }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        this.dataManager.register(BATTERY,0);
     }
 
     @Override
@@ -129,7 +138,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
         double x, y, z;
         //Vec3d look;
-        if(battery >= ENERGY_RAY_CONSUMPTION){
+        if(getBattery() >= ENERGY_RAY_CONSUMPTION){
             removeEnergy(ENERGY_RAY_CONSUMPTION);
             //look = target.getPositionVector().subtract(this.getPositionVector());
             EntityK9Ray ray = new EntityK9Ray(world,this);
@@ -208,10 +217,10 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-        if(ENERGY_MAX - battery >= maxReceive){
+        if(ENERGY_MAX - getBattery() >= maxReceive){
             return maxReceive;
         }
-        return ENERGY_MAX - battery;
+        return ENERGY_MAX - getBattery();
     }
 
     @Override
@@ -221,7 +230,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
 
     @Override
     public int getEnergyStored() {
-        return battery;
+        return getBattery();
     }
 
     @Override
@@ -236,27 +245,31 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
 
     @Override
     public boolean canReceive() {
-        return ENERGY_MAX - battery > 0;
+        return ENERGY_MAX - getBattery() > 0;
     }
 
     public boolean canReceive(int value) {
-        return ENERGY_MAX - battery > value;
+        return ENERGY_MAX - getBattery() > value;
     }
 
     public int getLevelEnergy(){
-        double level = (double)battery / ENERGY_MAX;
+        double level = (double)getBattery() / ENERGY_MAX;
         return (int)Math.floor(level * 100);
     }
 
     public void addEnergy(int value){
-        this.battery += value;
+        setBattery(getBattery() + value);
     }
 
     public void removeEnergy(int value){
-        this.battery -= value;
-        //debug
-        PlayerHelper.sendMessage((EntityPlayer)this.getOwner(),battery+"",false);
-        PlayerHelper.sendMessage((EntityPlayer)this.getOwner(),getLevelEnergy()+"%",false);
+        setBattery(getBattery() - value);
+    }
 
+    public void setBattery(int value){
+        this.dataManager.set(BATTERY, value);
+    }
+
+    public int getBattery(){
+        return this.dataManager.get(BATTERY);
     }
 }

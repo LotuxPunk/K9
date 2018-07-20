@@ -117,9 +117,6 @@ public class K9Gui extends GuiContainer {
                 }
 
                 break;
-            case BUTTON_CONTAINER:
-                player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, entity.getEntityId(), 0, 0);
-                break;
             default:
                 break;
         }
