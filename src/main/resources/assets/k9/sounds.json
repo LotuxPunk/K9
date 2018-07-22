@@ -25,5 +25,14 @@
       "name":"k9:entity/k9/death",
       "stream":true
     }]
+  },
+  "k9_laser_shoot":
+  {
+    "category":"hostile",
+    "subtitle":"k9_laser_shoot",
+    "sounds":[{
+      "name":"k9:entity/k9/laser_shoot",
+      "stream":true
+    }]
   }
 }

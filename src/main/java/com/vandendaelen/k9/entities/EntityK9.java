@@ -4,6 +4,7 @@ import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
+import net.minecraft.client.audio.Sound;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -98,7 +99,6 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         }
 
         if(player.getUniqueID().equals(ownerID)){
-            //Minecraft.getMinecraft().displayGuiScreen(new K9Gui(getOwnerId(),dimension,player, world, this.getPosition(), this));
             player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, this.getEntityId(), 0, 0);
             return EnumActionResult.SUCCESS;
         }
@@ -150,7 +150,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
             ray.setPosition(x,y,z);
             world.spawnEntity(ray);
 
-            //Todo Add sound on fire
+            world.playSound(null,getPosition(),SoundHandler.ENTITY_K9_LASER_SHOOT,SoundCategory.HOSTILE,1F,1F);
         }
         else {
             //Todo Add a sound when K9 can't shoot
