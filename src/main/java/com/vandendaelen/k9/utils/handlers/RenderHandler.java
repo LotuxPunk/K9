@@ -28,9 +28,5 @@ public class RenderHandler {
                 return new RenderK9Ray(manager);
             }
         });
-
-        //RenderingRegistry.registerEntityRenderingHandler(EntityK9Ray.class, new RenderK9Ray());
-
-
     }
 }
