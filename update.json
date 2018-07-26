@@ -1,8 +1,8 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/k9-mod",
   "promos": {
-    "1.12.2-latest": "0.9",
-    "1.12.2-recommended": "0.9"
+    "1.12.2-latest": "0.10",
+    "1.12.2-recommended": "0.10"
   },
   "1.12.2": {
     "0.6": "New model for K9",
@@ -12,6 +12,7 @@
     "0.7.3":"Fix bug where a random player can access at your K9's Dashboard",
     "0.8":"Adding an inventory to K9",
     "0.8.1":"Fix crash with K9 Gui",
-    "0.9":"Add a K9's battery, better GUI, Bug fix on inputs"
+    "0.9":"Add a K9's battery, better GUI, Bug fix on inputs",
+    "0.10":"Add sound on laser shoot, save the battery when the world it's unloaded."
   }
 }
