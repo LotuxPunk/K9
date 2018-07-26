@@ -4,7 +4,6 @@ import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
-import net.minecraft.client.audio.Sound;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -41,7 +40,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     public static final int INVENTORY_SIZE = 9;
 
     private final int ENERGY_MAX = 100000;
-    private final int ENERGY_MIN = 0;
+    private int ENERGY_MIN = 0;
     private final int ENERGY_LOW = ENERGY_MAX / 100 * 20;
     private final int ENERGY_RAY_CONSUMPTION = 1500;
 
@@ -97,8 +96,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
             addEnergy(REDSTONE_ENERGY_RESTORE);
             return EnumActionResult.SUCCESS;
         }
-
-        if(player.getUniqueID().equals(ownerID)){
+        else if(player.getUniqueID().equals(ownerID)){
             player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, this.getEntityId(), 0, 0);
             return EnumActionResult.SUCCESS;
         }
@@ -184,11 +182,16 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         if (compound.hasKey("items")) {
             itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
         }
+        if (compound.hasKey("energy")){
+            setBattery(compound.getInteger("energy"));
+        }
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+
         super.writeToNBT(compound);
+        compound.setInteger("energy",getBattery());
         compound.setTag("items", itemStackHandler.serializeNBT());
         return compound;
     }
@@ -199,28 +202,30 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return true;
-        }
-        return super.hasCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler);
-        }
         return super.getCapability(capability, facing);
+
     }
 
     //Energy functions
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
-        if(ENERGY_MAX - getBattery() >= maxReceive){
+        if (ENERGY_MAX - getBattery() >= maxReceive) {
             return maxReceive;
         }
         return ENERGY_MAX - getBattery();
+    }
+
+    @Override
+    public int getMaxEnergyStored() {
+        return ENERGY_MAX;
     }
 
     @Override
@@ -234,8 +239,8 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     }
 
     @Override
-    public int getMaxEnergyStored() {
-        return ENERGY_MAX;
+    public boolean canReceive() {
+        return getBattery() < ENERGY_MAX;
     }
 
     @Override
@@ -243,13 +248,8 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         return false;
     }
 
-    @Override
-    public boolean canReceive() {
-        return ENERGY_MAX - getBattery() > 0;
-    }
-
     public boolean canReceive(int value) {
-        return ENERGY_MAX - getBattery() > value;
+        return getBattery() + value < ENERGY_MAX;
     }
 
     public int getLevelEnergy(){
