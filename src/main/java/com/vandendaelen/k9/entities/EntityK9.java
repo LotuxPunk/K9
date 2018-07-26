@@ -40,7 +40,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     public static final int INVENTORY_SIZE = 9;
 
     private final int ENERGY_MAX = 100000;
-    private int ENERGY_MIN = 0;
+    private final int ENERGY_MIN = 0;
     private final int ENERGY_LOW = ENERGY_MAX / 100 * 20;
     private final int ENERGY_RAY_CONSUMPTION = 1500;
 
