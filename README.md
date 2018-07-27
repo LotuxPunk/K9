@@ -9,12 +9,12 @@ If you didn't know it K9 is literally the Doctor's robot dog (a bit forgotten in
 - [x] Make K9 from complicated to have materials.
 - [ ] K9 can pick up items,
 - [x] K9 can defend you,
-- [ ] K9 can serve you as a mini chest
+- [x] K9 can serve you as a mini chest
 - [ ] K9 can be assigned to a task if you do not need it.
 - [x] K9 can keep you company
 - [x] K9 can help you to pilot the TARDIS
 - [ ] K9 may prepare cookies for you
-- [ ] K9 will need to recharge
+- [x] K9 will need to recharge
 - [ ] K9 may become President of the United States
 - [ ] and many other things...
 
