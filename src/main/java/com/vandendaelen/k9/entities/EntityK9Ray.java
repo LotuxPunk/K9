@@ -1,5 +1,6 @@
 package com.vandendaelen.k9.entities;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.DamageSource;
@@ -25,7 +26,11 @@ public class EntityK9Ray extends EntityThrowable {
         if (result != null && result.entityHit instanceof EntityLivingBase) {
             result.entityHit.attackEntityFrom(this.getThrower() != null ? DamageSource.causeIndirectDamage(this, getThrower()) : DamageSource.FIREWORKS, 10F);
         }
-        if (result.typeOfHit == result.typeOfHit.BLOCK) this.setDead();
+        if (result.typeOfHit == result.typeOfHit.BLOCK) {
+            IBlockState state = world.getBlockState(result.getBlockPos());
+            if(!state.causesSuffocation())return;
+            this.setDead();
+        }
     }
 
     @Override
