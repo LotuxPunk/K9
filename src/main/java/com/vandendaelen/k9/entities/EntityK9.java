@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemRedstone;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
@@ -36,6 +37,7 @@ import java.util.UUID;
 public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergyStorage {
 
     private static final DataParameter<Integer> BATTERY = EntityDataManager.createKey(EntityK9.class,DataSerializers.VARINT);
+    private static  final DataParameter<Boolean> IS_MARK_II = EntityDataManager.createKey(EntityK9.class, DataSerializers.BOOLEAN);
 
     public static final int INVENTORY_SIZE = 9;
 
@@ -77,6 +79,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     protected void entityInit() {
         super.entityInit();
         this.dataManager.register(BATTERY,0);
+        this.dataManager.register(IS_MARK_II, rand.nextInt(10) >= 5);
     }
 
     @Override
@@ -185,6 +188,9 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         if (compound.hasKey("energy")){
             setBattery(compound.getInteger("energy"));
         }
+        if (compound.hasKey("mark2")){
+            setMarkII(compound.getBoolean("mark2"));
+        }
     }
 
     @Override
@@ -193,6 +199,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         super.writeToNBT(compound);
         compound.setInteger("energy",getBattery());
         compound.setTag("items", itemStackHandler.serializeNBT());
+        compound.setBoolean("mark2",isMarkII());
         return compound;
     }
 
@@ -210,7 +217,14 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler);
         return super.getCapability(capability, facing);
+    }
 
+    public boolean isMarkII(){
+        return this.dataManager.get(IS_MARK_II);
+    }
+
+    public void setMarkII(boolean value){
+        this.dataManager.set(IS_MARK_II,value);
     }
 
     //Energy functions
