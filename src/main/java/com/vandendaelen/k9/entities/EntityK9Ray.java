@@ -28,7 +28,8 @@ public class EntityK9Ray extends EntityThrowable {
         }
         if (result.typeOfHit == result.typeOfHit.BLOCK) {
             IBlockState state = world.getBlockState(result.getBlockPos());
-            if(!state.causesSuffocation())return;
+            if(!state.isTranslucent() && !state.causesSuffocation())
+                return;
             this.setDead();
         }
     }
