@@ -29,6 +29,7 @@ public class ItemK9Spawner<E extends EntityK9> extends ItemBase {
             entity.setTamedBy(player);
 
             player.getHeldItem(hand).setCount(player.getHeldItem(hand).getCount() - 1);
+            return EnumActionResult.SUCCESS;
         }
         return EnumActionResult.PASS;
     }

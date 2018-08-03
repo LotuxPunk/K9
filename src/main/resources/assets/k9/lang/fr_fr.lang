@@ -2,6 +2,7 @@ entity.K9.name=K9
 
 item.ingot_plaurium.name=Lingot de Plaurium
 item.spawner_k9.name=K9
+item.k9_remote.name=Télécommande de K9
 
 tile.block_plaurium.name=Bloc de Plaurium
 tile.ore_plaurium.name=Minerais de Plaurium
