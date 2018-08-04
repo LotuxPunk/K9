@@ -1,6 +1,7 @@
 package com.vandendaelen.k9.entities;
 
 import com.vandendaelen.k9.K9;
+import com.vandendaelen.k9.objects.items.ItemK9Remote;
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
@@ -99,7 +100,14 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
             addEnergy(REDSTONE_ENERGY_RESTORE);
             return EnumActionResult.SUCCESS;
         }
-        else if(player.getUniqueID().equals(ownerID)){
+
+        /*if(player.getHeldItem(hand).getItem() instanceof ItemK9Remote){
+            ItemK9Remote item = (ItemK9Remote)player.getHeldItem(hand).getItem();
+            item.setK9ID(player.getActiveItemStack(),this.getEntityId());
+            return EnumActionResult.SUCCESS;
+        }*/
+
+        if(player.getUniqueID().equals(ownerID)){
             player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, this.getEntityId(), 0, 0);
             return EnumActionResult.SUCCESS;
         }
