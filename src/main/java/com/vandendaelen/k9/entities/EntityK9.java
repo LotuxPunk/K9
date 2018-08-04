@@ -94,9 +94,9 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         UUID ownerID = getOwnerId();
         if (!(player.getHeldItem(hand).getItem() instanceof ItemK9Remote)) {
+
             if (player.getHeldItem(hand).getItem() instanceof ItemRedstone && this.canReceive(REDSTONE_ENERGY_RESTORE)) {
-                int stock = player.getHeldItem(hand).getCount();
-                player.getHeldItem(hand).setCount(--stock);
+                player.getHeldItem(hand).shrink(1);
                 addEnergy(REDSTONE_ENERGY_RESTORE);
                 return true;
             }
