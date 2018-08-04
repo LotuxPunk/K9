@@ -3,6 +3,7 @@ package com.vandendaelen.k9.objects.items;
 import com.vandendaelen.k9.entities.EntityK9;
 import com.vandendaelen.k9.utils.Utils;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,20 +23,33 @@ public class ItemK9Remote extends ItemBase {
         this.setMaxStackSize(1);
     }
 
-    @Override
+    /*@Override
     public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         EntityK9 k9 = Utils.isAClickOnK9(player,pos);
         if(!worldIn.isRemote && k9 != null){
             this.setK9ID(player.getActiveItemStack(), k9.getEntityId());
+            System.out.println("Ca passe");
             return EnumActionResult.SUCCESS;
         }
+        System.out.println("Ca passe pas");
         return  EnumActionResult.PASS;
+    }*/
+
+    @Override
+    public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
+        if (target instanceof EntityK9){
+            this.setK9ID(stack, target.getEntityId());
+            System.out.println("Ca passe");
+            return true;
+        }
+        System.out.println("Ca passe pas");
+        return super.itemInteractionForEntity(stack, playerIn, target, hand);
     }
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if(stack.hasTagCompound() && stack.getTagCompound().hasKey(NBT.K9ID)) {
-            tooltip.add("ID K9" + this.getK9ID(stack));
+            tooltip.add(new String("ID K9" + this.getK9ID(stack)));
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -56,8 +70,6 @@ public class ItemK9Remote extends ItemBase {
             return stack.getTagCompound().getInteger(NBT.K9ID);
         return 0;
     }
-
-
 
     public static class NBT {
         public final static String K9ID = "k9_id";

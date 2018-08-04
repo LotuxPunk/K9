@@ -91,30 +91,29 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
 
     @SideOnly(Side.CLIENT)
     @Override
-    public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
+    public boolean processInteract(EntityPlayer player, EnumHand hand) {
         UUID ownerID = getOwnerId();
+        if (!(player.getHeldItem(hand).getItem() instanceof ItemK9Remote)) {
+            if (player.getHeldItem(hand).getItem() instanceof ItemRedstone && this.canReceive(REDSTONE_ENERGY_RESTORE)) {
+                int stock = player.getHeldItem(hand).getCount();
+                player.getHeldItem(hand).setCount(--stock);
+                addEnergy(REDSTONE_ENERGY_RESTORE);
+                return true;
+            }
 
-        if(player.getHeldItem(hand).getItem() instanceof ItemRedstone && this.canReceive(REDSTONE_ENERGY_RESTORE)){
-            int stock = player.getHeldItem(hand).getCount();
-            player.getHeldItem(hand).setCount(--stock);
-            addEnergy(REDSTONE_ENERGY_RESTORE);
-            return EnumActionResult.SUCCESS;
+            if (player.getUniqueID().equals(ownerID)) {
+                player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, this.getEntityId(), 0, 0);
+                return true;
+            }
+
+            PlayerHelper.sendMessage(player, "Isn't your K9 !", true);
+            return false;
         }
-
-        /*if(player.getHeldItem(hand).getItem() instanceof ItemK9Remote){
-            ItemK9Remote item = (ItemK9Remote)player.getHeldItem(hand).getItem();
-            item.setK9ID(player.getActiveItemStack(),this.getEntityId());
-            return EnumActionResult.SUCCESS;
-        }*/
-
-        if(player.getUniqueID().equals(ownerID)){
-            player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, this.getEntityId(), 0, 0);
-            return EnumActionResult.SUCCESS;
-        }
-
-        PlayerHelper.sendMessage(player,"Isn't your K9 !",true);
-        return EnumActionResult.FAIL;
+        return false;
     }
+
+
+
 
     @Override
     protected PathNavigate createNavigator(World worldIn) {
