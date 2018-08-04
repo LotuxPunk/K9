@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 public class ItemK9Remote extends ItemBase {
 
@@ -38,7 +39,7 @@ public class ItemK9Remote extends ItemBase {
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         if (target instanceof EntityK9){
-            this.setK9ID(stack, target.getEntityId());
+            this.setK9ID(stack, target.getUniqueID());
             System.out.println("Ca passe");
             return true;
         }
@@ -59,16 +60,16 @@ public class ItemK9Remote extends ItemBase {
         return oldStack.getItem() != newStack.getItem();
     }
 
-    public static void setK9ID(ItemStack stack, int id){
+    public static void setK9ID(ItemStack stack, UUID id){
         if(stack.getTagCompound() == null)
             stack.setTagCompound(new NBTTagCompound());
-        stack.getTagCompound().setInteger(NBT.K9ID,id);
+        stack.getTagCompound().setUniqueId(NBT.K9ID,id);
     }
 
-    public static int getK9ID(ItemStack stack){
+    public static UUID getK9ID(ItemStack stack){
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey(NBT.K9ID))
-            return stack.getTagCompound().getInteger(NBT.K9ID);
-        return 0;
+            return stack.getTagCompound().getUniqueId(NBT.K9ID);
+        return null;
     }
 
     public static class NBT {
