@@ -30,7 +30,7 @@ public class ItemK9Remote extends ItemBase {
 
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
-        if (target instanceof EntityK9){
+        if (!target.world.isRemote && target instanceof EntityK9){
             this.setK9ID(stack, target.getUniqueID());
             System.out.println(getK9ID(stack).toString());
             return true;
@@ -54,6 +54,9 @@ public class ItemK9Remote extends ItemBase {
         if(stack.hasTagCompound() && stack.getTagCompound().hasUniqueId(NBT.K9ID)) {
             tooltip.add("ID K9 " + this.getK9ID(stack).toString());
             System.out.println("Ca passe");
+        }
+        else {
+            tooltip.add("You should be in survival mod to set the link between K9 and this remote");
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
