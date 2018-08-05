@@ -31,12 +31,10 @@ public class ItemK9Remote extends ItemBase {
     @Override
     public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
         if (target instanceof EntityK9){
-            System.out.println(target.world);
             this.setK9ID(stack, target.getUniqueID());
-            //System.out.println(getK9ID(stack).toString());
+            System.out.println(getK9ID(stack).toString());
             return true;
         }
-        System.out.println("Ca passe pas");
         return super.itemInteractionForEntity(stack, playerIn, target, hand);
     }
 
@@ -53,8 +51,9 @@ public class ItemK9Remote extends ItemBase {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        if(stack.hasTagCompound() && stack.getTagCompound().hasKey(NBT.K9ID)) {
+        if(stack.hasTagCompound() && stack.getTagCompound().hasUniqueId(NBT.K9ID)) {
             tooltip.add("ID K9 " + this.getK9ID(stack).toString());
+            System.out.println("Ca passe");
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -71,7 +70,7 @@ public class ItemK9Remote extends ItemBase {
     }
 
     public static UUID getK9ID(ItemStack stack){
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey(NBT.K9ID))
+        if (stack.hasTagCompound() && stack.getTagCompound().hasUniqueId(NBT.K9ID))
             return stack.getTagCompound().getUniqueId(NBT.K9ID);
         return null;
     }
