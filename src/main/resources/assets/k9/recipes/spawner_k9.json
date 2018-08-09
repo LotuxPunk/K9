@@ -22,7 +22,7 @@
     },
     "conditions": [
         {
-            "type": "K9:IsTARDISModNotLoaded"
+            "type": "IsTARDISModNotLoaded"
         }
     ]
 }

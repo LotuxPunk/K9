@@ -97,7 +97,7 @@ public class K9Gui extends GuiContainer {
                 //sendChatMessage("x:" + xTravel +", y:" + yTravel +", z:" + zTravel);
                 if(Loader.isModLoaded(Reference.TARDIS_MODID)){
                     if (TardisHelper.hasTardis(id)){
-                        if (dim == TDimensions.id){
+                        if (dim == TDimensions.TARDIS_ID){
                             BlockPos tardisBP = new BlockPos(TardisHelper.getTardis(id));
                             BlockPos destination = new BlockPos(xTravel,yTravel,zTravel);
 

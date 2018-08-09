@@ -50,7 +50,7 @@ public class MessageK9Piloting implements IMessage {
             ctx.getServerHandler().player.getServerWorld().addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    WorldServer ws = DimensionManager.getWorld(TDimensions.id);
+                    WorldServer ws = DimensionManager.getWorld(TDimensions.TARDIS_ID);
 
                     TileEntity te = ws.getTileEntity(tardisBP);
                     if (te instanceof TileEntityTardis){
