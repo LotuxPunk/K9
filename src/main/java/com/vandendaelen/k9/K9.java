@@ -5,6 +5,7 @@ import com.vandendaelen.k9.init.K9Items;
 import com.vandendaelen.k9.init.K9Recipes;
 import com.vandendaelen.k9.packets.MessageK9Piloting;
 import com.vandendaelen.k9.proxy.CommonProxy;
+import com.vandendaelen.k9.proxy.GuiProxy;
 import com.vandendaelen.k9.tabs.K9Tab;
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.handlers.RegistryHandler;
@@ -21,6 +22,8 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.Logger;
+
 
 @Mod(modid = Reference.MODID, name =Reference.NAME , version =Reference.VERSION, dependencies = Reference.DEPENDENCIES, updateJSON = Reference.UPDATE_JSON)
 public class K9 {
@@ -29,13 +32,15 @@ public class K9 {
     public static SimpleNetworkWrapper NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID);
 
     public static final CreativeTabs k9Tab = new K9Tab("k9tab");
+    public static Logger logger;
 
     @SidedProxy(clientSide = Reference.CLIENT_PROXY,serverSide = Reference.SERVER_PROXY)
     public static CommonProxy proxy;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent e){
-        System.out.println(Reference.MODID + " : preInit");
+        logger = e.getModLog();
+        logger.info("preInit :");
 
         RegistryHandler.preInitRegistries();
         RegistryHandler.otherRegisteries();
@@ -44,13 +49,14 @@ public class K9 {
         K9Blocks.init();
 
         NETWORK.registerMessage(MessageK9Piloting.Handler.class,MessageK9Piloting.class,1,Side.SERVER);
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
 
         proxy.preInit(e);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent e){
-        System.out.println(Reference.MODID + " : init");
+        logger.info("init :");
         RegistryHandler.initRegisteries();
 
         proxy.init(e);
@@ -62,6 +68,6 @@ public class K9 {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent e){
-        System.out.println(Reference.MODID + " : postInit");
+        logger.info("postInit :");
     }
 }
