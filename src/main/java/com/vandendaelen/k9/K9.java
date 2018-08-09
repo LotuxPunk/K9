@@ -1,14 +1,14 @@
 package com.vandendaelen.k9;
 
 import com.vandendaelen.k9.init.K9Blocks;
+import com.vandendaelen.k9.init.K9Entities;
 import com.vandendaelen.k9.init.K9Items;
 import com.vandendaelen.k9.init.K9Recipes;
 import com.vandendaelen.k9.packets.MessageK9Piloting;
-import com.vandendaelen.k9.proxy.CommonProxy;
 import com.vandendaelen.k9.proxy.GuiProxy;
+import com.vandendaelen.k9.proxy.IProxy;
 import com.vandendaelen.k9.tabs.K9Tab;
 import com.vandendaelen.k9.utils.Reference;
-import com.vandendaelen.k9.utils.handlers.RegistryHandler;
 import com.vandendaelen.k9.world.gen.OreGen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
@@ -34,16 +34,15 @@ public class K9 {
     public static final CreativeTabs k9Tab = new K9Tab("k9tab");
     public static Logger logger;
 
-    @SidedProxy(clientSide = Reference.CLIENT_PROXY,serverSide = Reference.SERVER_PROXY)
-    public static CommonProxy proxy;
+    @SidedProxy(modId =Reference.MODID,clientSide = Reference.CLIENT_PROXY,serverSide = Reference.SERVER_PROXY)
+    public static IProxy proxy;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent e){
         logger = e.getModLog();
         logger.info("preInit :");
 
-        RegistryHandler.preInitRegistries();
-        RegistryHandler.otherRegisteries();
+        K9Entities.registerEntities();
 
         K9Items.init();
         K9Blocks.init();
@@ -57,7 +56,6 @@ public class K9 {
     @EventHandler
     public void init(FMLInitializationEvent e){
         logger.info("init :");
-        RegistryHandler.initRegisteries();
 
         proxy.init(e);
 

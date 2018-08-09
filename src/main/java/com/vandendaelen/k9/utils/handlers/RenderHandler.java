@@ -13,8 +13,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RenderHandler {
 
-    @SideOnly(Side.CLIENT)
     public static void registerEntityRenders(){
+
         RenderingRegistry.registerEntityRenderingHandler(EntityK9.class, new IRenderFactory<EntityK9>() {
             @Override
             public Render<? super EntityK9> createRenderFor(RenderManager manager) {
@@ -28,5 +28,6 @@ public class RenderHandler {
                 return new RenderK9Ray(manager);
             }
         });
+
     }
 }
