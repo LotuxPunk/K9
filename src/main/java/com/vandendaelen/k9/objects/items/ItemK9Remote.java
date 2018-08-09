@@ -3,16 +3,12 @@ package com.vandendaelen.k9.objects.items;
 import com.vandendaelen.k9.entities.EntityK9;
 import com.vandendaelen.k9.utils.K9Teleporter;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Teleporter;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
