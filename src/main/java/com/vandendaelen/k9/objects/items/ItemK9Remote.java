@@ -36,9 +36,7 @@ public class ItemK9Remote extends ItemBase {
 
                     return ActionResult.newResult(EnumActionResult.SUCCESS,playerIn.getHeldItem(handIn));
                 }
-                return ActionResult.newResult(EnumActionResult.PASS,playerIn.getHeldItem(handIn));
             }
-            return ActionResult.newResult(EnumActionResult.PASS,playerIn.getHeldItem(handIn));
         }
         return ActionResult.newResult(EnumActionResult.PASS,playerIn.getHeldItem(handIn));
     }
