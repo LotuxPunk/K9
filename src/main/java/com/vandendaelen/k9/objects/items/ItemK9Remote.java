@@ -28,15 +28,6 @@ public class ItemK9Remote extends ItemBase {
     }
 
     @Override
-    public boolean itemInteractionForEntity(ItemStack stack, EntityPlayer playerIn, EntityLivingBase target, EnumHand hand) {
-        if (!target.world.isRemote && target instanceof EntityK9){
-            this.setK9ID(stack, target.getPersistentID());
-            return true;
-        }
-        return super.itemInteractionForEntity(stack, playerIn, target, hand);
-    }
-
-    @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         if (!worldIn.isRemote){
             UUID uuid = getK9ID(playerIn.getHeldItem(handIn));

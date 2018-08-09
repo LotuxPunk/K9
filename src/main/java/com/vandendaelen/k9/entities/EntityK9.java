@@ -89,15 +89,21 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
     public boolean processInteract(EntityPlayer player, EnumHand hand) {
         UUID ownerID = getOwnerId();
-        if (!(player.getHeldItem(hand).getItem() instanceof ItemK9Remote)) {
 
+        if (player.getUniqueID().equals(ownerID)){
             if (player.getHeldItem(hand).getItem() instanceof ItemRedstone && this.canReceive(REDSTONE_ENERGY_RESTORE)) {
                 player.getHeldItem(hand).shrink(1);
                 addEnergy(REDSTONE_ENERGY_RESTORE);
+                return true;
+            }
+
+            if (player.getHeldItem(hand).getItem() instanceof ItemK9Remote){
+                ItemK9Remote remote = (ItemK9Remote) player.getHeldItem(hand).getItem();
+                remote.setK9ID(player.getHeldItem(hand), this.getUniqueID());
+                K9.logger.debug(remote.getK9ID(player.getHeldItem(hand)));
                 return true;
             }
 
@@ -105,11 +111,11 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
                 player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, this.getEntityId(), 0, 0);
                 return true;
             }
-
-            PlayerHelper.sendMessage(player, "Isn't your K9 !", true);
-            return false;
         }
+
+        PlayerHelper.sendMessage(player, "Isn't your K9 !", true);
         return false;
+
     }
 
 
