@@ -9,6 +9,7 @@ import com.vandendaelen.k9.proxy.GuiProxy;
 import com.vandendaelen.k9.proxy.IProxy;
 import com.vandendaelen.k9.tabs.K9Tab;
 import com.vandendaelen.k9.utils.Reference;
+import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import com.vandendaelen.k9.world.gen.OreGen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
@@ -60,6 +61,8 @@ public class K9 {
         proxy.init(e);
 
         K9Recipes.init();
+
+        SoundHandler.registerSounds();
 
         GameRegistry.registerWorldGenerator(new OreGen(), 0);
     }

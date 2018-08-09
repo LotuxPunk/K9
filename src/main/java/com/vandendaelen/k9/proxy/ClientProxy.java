@@ -20,7 +20,7 @@ public class ClientProxy implements IProxy{
 
     @Override
     public void init(FMLInitializationEvent e) {
-        SoundHandler.registerSounds();
+
     }
 
     public void registerItemRenderer(Item item, int meta, String id) {
