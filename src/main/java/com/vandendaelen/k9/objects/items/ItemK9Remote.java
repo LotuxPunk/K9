@@ -30,10 +30,7 @@ public class ItemK9Remote extends ItemBase {
             if (uuid != null){
                 EntityK9 k9 = (EntityK9)worldIn.getMinecraftServer().getEntityFromUuid(uuid);
                 if (k9 != null && k9.getOwnerId().equals(playerIn.getUniqueID())){
-                    if (k9.dimension != playerIn.dimension) K9Teleporter.teleportDimEntity(k9,playerIn.getPosition(),playerIn.dimension);
-
-                    k9.setLocationAndAngles(playerIn.posX,playerIn.posY,playerIn.posZ, playerIn.cameraYaw,playerIn.cameraPitch);
-
+                    K9Teleporter.move(k9, playerIn.dimension, playerIn.getPosition());
                     return ActionResult.newResult(EnumActionResult.SUCCESS,playerIn.getHeldItem(handIn));
                 }
             }

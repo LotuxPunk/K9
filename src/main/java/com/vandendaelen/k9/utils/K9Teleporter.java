@@ -1,66 +1,57 @@
 package com.vandendaelen.k9.utils;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Teleporter;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.ITeleporter;
 
-public class K9Teleporter extends Teleporter {
+import javax.annotation.Nullable;
 
-    public K9Teleporter(WorldServer worldIn) {
-        super(worldIn);
+public final class K9Teleporter {
+
+    private K9Teleporter(WorldServer worldIn) {
     }
 
-    public static boolean teleportDimEntity(Entity entity, BlockPos pos, int targetDim) {
-        if (entity.getEntityWorld().isRemote || entity.isRiding() || entity.isBeingRidden() || !entity.isEntityAlive()) {
-            return false;
+    @Nullable
+    public static Entity move(Entity entity, int dimension, BlockPos pos) {
+        return move(entity, dimension, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+    }
+
+
+    @Nullable
+    public static Entity move(Entity entity, int dimension, double x, double y, double z) {
+        if (entity.world.isRemote || entity.isRiding() || entity.isBeingRidden() || !entity.isNonBoss()) {
+            return null;
         }
-        int from = entity.dimension;
-        if (from != targetDim) {
-            MinecraftServer server = entity.getServer();
-            WorldServer fromDim = server.getWorld(from);
-            WorldServer toDim = server.getWorld(targetDim);
-            Teleporter teleporter = new K9Teleporter(toDim);
-
-            NBTTagCompound tagCompound = entity.serializeNBT();
-            float rotationYaw = entity.rotationYaw;
-            float rotationPitch = entity.rotationPitch;
-            fromDim.removeEntity(entity);
-            Entity newEntity = EntityList.createEntityFromNBT(tagCompound, toDim);
-
-            if (newEntity != null) {
-                newEntity.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), rotationYaw, rotationPitch);
-                newEntity.forceSpawn = true;
-                toDim.spawnEntity(newEntity);
-                newEntity.forceSpawn = false;
+        if (entity.dimension == dimension) {
+            if (entity instanceof EntityPlayerMP) {
+                ((EntityPlayerMP) entity).connection.setPlayerLocation(x, y, z, entity.rotationYaw, entity.rotationPitch);
             } else {
-                return false;
+                entity.setLocationAndAngles(x, y, z, entity.rotationYaw, entity.rotationPitch);
             }
+            return entity;
         }
-        if (!entity.world.isBlockLoaded(pos)) {
-            entity.world.getChunkFromBlockCoords(pos);
+        return entity.changeDimension(dimension, new SimpleTeleporter(x, y, z));
+    }
+
+    private static final class SimpleTeleporter implements ITeleporter {
+        private final double x;
+
+        private final double y;
+
+        private final double z;
+
+        private SimpleTeleporter(double x, double y, double z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
-        entity.setPositionAndUpdate(pos.getX() + 0.5D, pos.getY() + 0.1D, pos.getZ() + 0.5D);
-        entity.fallDistance = 0;
-        return true;
+
+        @Override
+        public void placeEntity(World world, Entity entity, float yaw) {
+            entity.setLocationAndAngles(x, y, z, yaw, entity.rotationPitch);
+        }
     }
-
-    @Override
-    public void placeInPortal(Entity entityIn, float rotationYaw) {}
-
-    @Override
-    public boolean placeInExistingPortal(Entity entityIn, float rotationYaw) {
-        return true;
-    }
-
-    @Override
-    public boolean makePortal(Entity entityIn) {
-        return true;
-    }
-
-    @Override
-    public void removeStalePortalLocations(long worldTime) {}
 }
