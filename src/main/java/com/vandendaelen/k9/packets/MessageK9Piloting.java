@@ -52,7 +52,7 @@ public class MessageK9Piloting implements IMessage {
                 public void run() {
                     WorldServer ws = DimensionManager.getWorld(TDimensions.TARDIS_ID);
 
-                    if (ws.isBlockLoaded(tardisBP))) {
+                    if (ws.isBlockLoaded(tardisBP)) {
                         TileEntity te = ws.getTileEntity(tardisBP);
                         if (te instanceof TileEntityTardis){
                             ((TileEntityTardis) te).setDesination(destination,dimension);
