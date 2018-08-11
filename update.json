@@ -14,6 +14,7 @@
     "0.8.1":"Fix crash with K9 Gui",
     "0.9":"Add a K9's battery, better GUI, Bug fix on inputs",
     "0.10":"Add sound on laser shoot, save the battery when the world it's unloaded.",
-    "0.11":"Add K9 remote, Bug fixes, Optimizations"
+    "0.11":"Add K9 remote, Bug fixes, Optimizations",
+    "0.11.1":"Fix bug when double click on the remote in The Nether, security and stuff"
   }
 }
