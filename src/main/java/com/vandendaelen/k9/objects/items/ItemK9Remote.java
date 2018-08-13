@@ -1,7 +1,9 @@
 package com.vandendaelen.k9.objects.items;
 
+import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.entities.EntityK9;
 import com.vandendaelen.k9.utils.K9Teleporter;
+import com.vandendaelen.k9.utils.Reference;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -25,7 +27,10 @@ public class ItemK9Remote extends ItemBase {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        if (!worldIn.isRemote){
+        playerIn.openGui(K9.instance, Reference.GUI_ID_REMOTE,worldIn,0,0,0);
+        return ActionResult.newResult(EnumActionResult.SUCCESS,playerIn.getHeldItem(handIn));
+
+        /*if (!worldIn.isRemote){
             UUID uuid = getK9ID(playerIn.getHeldItem(handIn));
             if (uuid != null){
                 EntityK9 k9 = (EntityK9)worldIn.getMinecraftServer().getEntityFromUuid(uuid);
@@ -34,8 +39,7 @@ public class ItemK9Remote extends ItemBase {
                     return ActionResult.newResult(EnumActionResult.SUCCESS,playerIn.getHeldItem(handIn));
                 }
             }
-        }
-        return ActionResult.newResult(EnumActionResult.PASS,playerIn.getHeldItem(handIn));
+        }*/
     }
 
     @Override

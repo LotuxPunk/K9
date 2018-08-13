@@ -17,4 +17,5 @@ public class Reference {
     public static final String TARDIS_MODID = "tardis";
 
     public static final int GUI_ID_CONTAINER = 1;
+    public static final int GUI_ID_REMOTE = 2;
 }

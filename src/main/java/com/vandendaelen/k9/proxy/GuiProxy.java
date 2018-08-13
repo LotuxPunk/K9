@@ -2,6 +2,7 @@ package com.vandendaelen.k9.proxy;
 
 import com.vandendaelen.k9.entities.EntityK9;
 import com.vandendaelen.k9.gui.K9Gui;
+import com.vandendaelen.k9.gui.RemoteGui;
 import com.vandendaelen.k9.objects.containers.K9Container;
 import com.vandendaelen.k9.utils.Reference;
 
@@ -24,6 +25,9 @@ public class GuiProxy implements IGuiHandler {
 				return new K9Container(player.inventory, (EntityK9) e);
 			}
 		}
+		else if (ID == Reference.GUI_ID_REMOTE){
+			return new RemoteGui();
+		}
 		return null;
 	}
 
@@ -36,6 +40,9 @@ public class GuiProxy implements IGuiHandler {
 			if(e!=null||!(e instanceof EntityK9)) {
 				return new K9Gui(new K9Container(player.inventory, (EntityK9) e), ((EntityK9) e), player, world);
 			}
+		}
+		else if (ID == Reference.GUI_ID_REMOTE){
+			return new RemoteGui();
 		}
 		return null;
 	}
