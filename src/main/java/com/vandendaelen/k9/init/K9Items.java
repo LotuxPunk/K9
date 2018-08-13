@@ -36,7 +36,7 @@ public class K9Items {
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
         for (Item item:ITEMS) {
-            event.getRegistry().registerAll(item);
+            event.getRegistry().register(item);
         }
     }
 
