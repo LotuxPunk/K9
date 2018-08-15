@@ -7,7 +7,6 @@ import com.vandendaelen.k9.utils.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
@@ -25,11 +24,9 @@ public class RemoteGui extends GuiScreen {
 
     public final int BUTTON_TELEPORT = 0;
 
-    private EntityPlayer player;
     private UUID uuid;
 
-    public RemoteGui(EntityPlayer player, UUID uuid) {
-        this.player = player;
+    public RemoteGui(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -61,7 +58,7 @@ public class RemoteGui extends GuiScreen {
     protected void actionPerformed(GuiButton button) throws IOException {
         switch (button.id){
             case BUTTON_TELEPORT:
-                K9.NETWORK.sendToServer(new MessageK9Teleport(player.dimension,player.getPosition(),uuid));
+                K9.NETWORK.sendToServer(new MessageK9Teleport(uuid));
                 break;
                 default:
                     break;

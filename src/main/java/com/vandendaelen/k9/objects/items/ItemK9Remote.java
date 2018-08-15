@@ -29,7 +29,7 @@ public class ItemK9Remote extends ItemBase {
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
         if (!worldIn.isRemote){
             EntityK9 k9 = (EntityK9) worldIn.getMinecraftServer().getEntityFromUuid(getK9ID(playerIn.getHeldItem(handIn)));
-            K9.NETWORK.sendTo(new MessageRemoteOpenGUI(playerIn.getUniqueID(),k9.getEntityId()),(EntityPlayerMP)playerIn);
+            K9.NETWORK.sendTo(new MessageRemoteOpenGUI(k9.getEntityId()),(EntityPlayerMP)playerIn);
         }
         return ActionResult.newResult(EnumActionResult.SUCCESS,playerIn.getHeldItem(handIn));
     }

@@ -41,7 +41,7 @@ public class GuiProxy implements IGuiHandler {
 		else if (ID == Reference.GUI_ID_REMOTE){
 			Entity e = world.getEntityByID(x);
 			if(e!=null||!(e instanceof EntityK9))
-				return new RemoteGui(player, e.getUniqueID());
+				return new RemoteGui(e.getUniqueID());
 		}
 		return null;
 	}
