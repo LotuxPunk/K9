@@ -16,19 +16,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemRedstone;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.*;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -38,7 +34,8 @@ import java.util.UUID;
 public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergyStorage {
 
     private static final DataParameter<Integer> BATTERY = EntityDataManager.createKey(EntityK9.class,DataSerializers.VARINT);
-    private static  final DataParameter<Boolean> IS_MARK_II = EntityDataManager.createKey(EntityK9.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_MARK_II = EntityDataManager.createKey(EntityK9.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Integer> MODE = EntityDataManager.createKey(EntityK9.class,DataSerializers.VARINT);
 
     public static final int INVENTORY_SIZE = 9;
 
@@ -81,6 +78,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         super.entityInit();
         this.dataManager.register(BATTERY,0);
         this.dataManager.register(IS_MARK_II, rand.nextInt(10) >= 5);
+        this.dataManager.register(MODE,1);
     }
 
     @Override
@@ -204,6 +202,9 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         if (compound.hasKey("mark2")){
             setMarkII(compound.getBoolean("mark2"));
         }
+        if (compound.hasKey("mode")){
+            setMode(compound.getInteger("mode"));
+        }
     }
 
     @Override
@@ -213,6 +214,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         compound.setInteger("energy",getBattery());
         compound.setTag("items", itemStackHandler.serializeNBT());
         compound.setBoolean("mark2",isMarkII());
+        compound.setInteger("mode",getMode());
         return compound;
     }
 
@@ -238,6 +240,14 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
 
     public void setMarkII(boolean value){
         this.dataManager.set(IS_MARK_II,value);
+    }
+
+    public int getMode(){
+        return this.dataManager.get(MODE);
+    }
+
+    public void setMode(int value){
+        this.dataManager.set(MODE,value);
     }
 
     //Energy functions

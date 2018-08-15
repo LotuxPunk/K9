@@ -18,27 +18,37 @@ public class RemoteGui extends GuiScreen {
     private final int guiHeight = 166;
     private final int guiWidth = 248;
     private final int btnHeight = 20;
-    private final int btnWidth = 100;
+    private final int btnWidth = 200;
 
-    public GuiButton btnTeleport;
+    private GuiButton btnTeleport;
+    private GuiButton btnMode;
+
 
     public final int BUTTON_TELEPORT = 0;
+    public final int BUTTON_MODE = 1;
+
+    private String btnTextMode;
 
     private UUID uuid;
+    private int mode;
 
-    public RemoteGui(UUID uuid) {
+    public RemoteGui(UUID uuid, int mode) {
         this.uuid = uuid;
+        this.mode = mode;
+        btnTextMode = getModeString(mode);
     }
 
     @Override
     public void initGui() {
-        int centerX = (width/2) - guiWidth/2;
-        int centerY = (height/2) - guiHeight/2;
-        int guiLastX = (width/2) + guiWidth/2;
-        int guiLastY = (height/2) + guiHeight/2;
+        int guiFirstX = width/2 - guiWidth/2;
+        int guiFirstY = height/2 - guiHeight/2;
+        int guiLastX = width/2 + guiWidth/2;
+        int guiLastY = height/2 + guiHeight/2;
+        int guiCenterX = guiFirstX + guiWidth/2;
 
         buttonList.clear();
-        buttonList.add(btnTeleport = new GuiButton(BUTTON_TELEPORT,centerX + 10,centerY + 10 ,btnWidth,btnHeight,new TextComponentTranslation(K9Strings.GuiText.K9_TELEPORT).getFormattedText()));
+        buttonList.add(btnTeleport = new GuiButton(BUTTON_TELEPORT,guiCenterX - btnWidth/2,guiFirstY + 10 ,btnWidth,btnHeight,new TextComponentTranslation(K9Strings.GuiText.K9_TELEPORT).getFormattedText()));
+        buttonList.add(btnMode = new GuiButton(BUTTON_MODE,guiCenterX - btnWidth/2,guiFirstY + 20 + btnHeight,btnWidth, btnHeight, new TextComponentTranslation(btnTextMode).getFormattedText()));
 
         super.initGui();
     }
@@ -52,6 +62,18 @@ public class RemoteGui extends GuiScreen {
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         drawTexturedModalRect(centerX,centerY,0,0,guiWidth,guiHeight);
         btnTeleport.drawButton(mc,mouseX,mouseY,0F);
+        btnMode.drawButton(mc,mouseX,mouseY,0F);
+        switch (mode){
+            case 0:
+                btnMode.displayString = new TextComponentTranslation(K9Strings.Mode.PEACEFUL).getFormattedText();
+                break;
+            case 1:
+                btnMode.displayString = new TextComponentTranslation(K9Strings.Mode.MOB_PROTECTION).getFormattedText();
+                break;
+            default:
+                btnMode.displayString = new TextComponentTranslation(K9Strings.Mode.FULL_PROTECTION).getFormattedText();
+                break;
+        }
     }
 
     @Override
@@ -60,13 +82,35 @@ public class RemoteGui extends GuiScreen {
             case BUTTON_TELEPORT:
                 K9.NETWORK.sendToServer(new MessageK9Teleport(uuid));
                 break;
-                default:
-                    break;
+            case BUTTON_MODE:
+                mode = clickMode(mode);
+            default:
+                break;
         }
     }
 
     @Override
     public boolean doesGuiPauseGame() {
         return false;
+    }
+
+    private String getModeString(int value){
+        switch (value){
+            case 0 :
+                return K9Strings.Mode.PEACEFUL;
+            case 1 :
+                return K9Strings.Mode.MOB_PROTECTION;
+            default :
+                return K9Strings.Mode.FULL_PROTECTION;
+        }
+    }
+
+    private int clickMode(int value){
+        switch (value){
+            case 2:
+                return 0;
+            default:
+                return value+1;
+        }
     }
 }

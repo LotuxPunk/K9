@@ -9,4 +9,8 @@ item.k9_remote.name=Télécommande de K9
 tile.block_plaurium.name=Bloc de Plaurium
 tile.ore_plaurium.name=Minerais de Plaurium
 
-gui.text.teleport=Téleporter K9
+k9.gui.text.teleport=Téleporter K9
+
+k9.mode.peaceful=Mode : Pacifique (DESACTIVE)
+k9.mode.mob_protect=Mode : Protection mob (DESACTIVE)
+k9.mode.full_protect=Mode : Protection complète (DESACTIVE)
