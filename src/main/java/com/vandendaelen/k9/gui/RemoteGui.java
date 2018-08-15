@@ -1,14 +1,18 @@
 package com.vandendaelen.k9.gui;
 
+import com.vandendaelen.k9.K9;
+import com.vandendaelen.k9.packets.MessageK9Teleport;
 import com.vandendaelen.k9.utils.K9Strings;
 import com.vandendaelen.k9.utils.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class RemoteGui extends GuiScreen {
     public final ResourceLocation texture = new ResourceLocation(Reference.MODID,"textures/gui/gui.png");
@@ -21,8 +25,12 @@ public class RemoteGui extends GuiScreen {
 
     public final int BUTTON_TELEPORT = 0;
 
-    public RemoteGui() {
-        super();
+    private EntityPlayer player;
+    private UUID uuid;
+
+    public RemoteGui(EntityPlayer player, UUID uuid) {
+        this.player = player;
+        this.uuid = uuid;
     }
 
     @Override
@@ -50,8 +58,14 @@ public class RemoteGui extends GuiScreen {
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        super.mouseClicked(mouseX, mouseY, mouseButton);
+    protected void actionPerformed(GuiButton button) throws IOException {
+        switch (button.id){
+            case BUTTON_TELEPORT:
+                K9.NETWORK.sendToServer(new MessageK9Teleport(player.dimension,player.getPosition(),uuid));
+                break;
+                default:
+                    break;
+        }
     }
 
     @Override

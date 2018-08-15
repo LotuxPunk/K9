@@ -25,9 +25,6 @@ public class GuiProxy implements IGuiHandler {
 				return new K9Container(player.inventory, (EntityK9) e);
 			}
 		}
-		else if (ID == Reference.GUI_ID_REMOTE){
-			return new RemoteGui();
-		}
 		return null;
 	}
 
@@ -42,7 +39,9 @@ public class GuiProxy implements IGuiHandler {
 			}
 		}
 		else if (ID == Reference.GUI_ID_REMOTE){
-			return new RemoteGui();
+			Entity e = world.getEntityByID(x);
+			if(e!=null||!(e instanceof EntityK9))
+				return new RemoteGui(player, e.getUniqueID());
 		}
 		return null;
 	}

@@ -2,10 +2,10 @@ package com.vandendaelen.k9.objects.items;
 
 import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.entities.EntityK9;
-import com.vandendaelen.k9.utils.K9Teleporter;
-import com.vandendaelen.k9.utils.Reference;
+import com.vandendaelen.k9.packets.MessageRemoteOpenGUI;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
@@ -27,19 +27,11 @@ public class ItemK9Remote extends ItemBase {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        playerIn.openGui(K9.instance, Reference.GUI_ID_REMOTE,worldIn,0,0,0);
+        if (!worldIn.isRemote){
+            EntityK9 k9 = (EntityK9) worldIn.getMinecraftServer().getEntityFromUuid(getK9ID(playerIn.getHeldItem(handIn)));
+            K9.NETWORK.sendTo(new MessageRemoteOpenGUI(playerIn.getUniqueID(),k9.getEntityId()),(EntityPlayerMP)playerIn);
+        }
         return ActionResult.newResult(EnumActionResult.SUCCESS,playerIn.getHeldItem(handIn));
-
-        /*if (!worldIn.isRemote){
-            UUID uuid = getK9ID(playerIn.getHeldItem(handIn));
-            if (uuid != null){
-                EntityK9 k9 = (EntityK9)worldIn.getMinecraftServer().getEntityFromUuid(uuid);
-                if (k9 != null && k9.getOwnerId().equals(playerIn.getUniqueID())){
-                    K9Teleporter.move(k9, playerIn.dimension, playerIn.getPosition());
-                    return ActionResult.newResult(EnumActionResult.SUCCESS,playerIn.getHeldItem(handIn));
-                }
-            }
-        }*/
     }
 
     @Override
