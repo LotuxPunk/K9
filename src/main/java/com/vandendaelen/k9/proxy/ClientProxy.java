@@ -2,7 +2,6 @@ package com.vandendaelen.k9.proxy;
 
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.handlers.RenderHandler;
-import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -31,7 +30,7 @@ public class ClientProxy implements IProxy{
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(new ResourceLocation(Reference.MODID,filename), id));
     }
 
-    public void Register(Object o) {
+    public void register(Object o) {
         if(o instanceof Block) {
             Block toRegister = (Block) o;
             String name = toRegister.getRegistryName().toString();
