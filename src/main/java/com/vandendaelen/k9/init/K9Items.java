@@ -21,16 +21,18 @@ public class K9Items {
 
     public static List<Item> ITEMS = new ArrayList<Item>();
 
-    public static Item ingot_plaurium, spawner_k9, remote_k9;
+    public static Item ingot_plaurium, spawner_k9, remote_k9, dummy_k9;
 
     public static void init(){
         ingot_plaurium = new ItemBase("ingot_plaurium");
         spawner_k9 = new ItemK9Spawner<>("spawner_k9",EntityK9::new);
         remote_k9 = new ItemK9Remote("k9_remote");
+        dummy_k9 = new ItemBase("k9_dummy").setCreativeTab(null);
 
         ITEMS.add(ingot_plaurium);
         ITEMS.add(spawner_k9);
         ITEMS.add(remote_k9);
+        ITEMS.add(dummy_k9);
     }
 
     @SubscribeEvent
