@@ -10,6 +10,14 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
+jar {
+    manifest {
+        attributes([
+                'Maven-Artifact': "${project.group}:${archivesBaseName}:${project.version}",
+                'Timestamp'     : System.currentTimeMillis()
+        ])
+    }
+}
 
 version = "0.11.2"
 group = "com.vandendaelen.k9" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
