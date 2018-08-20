@@ -19,7 +19,7 @@ jar {
     }
 }
 
-version = "0.11.2"
+version = "0.12"
 group = "com.vandendaelen.k9" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "k9"
 

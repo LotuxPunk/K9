@@ -1,8 +1,8 @@
 {
   "homepage": "https://minecraft.curseforge.com/projects/k9-mod",
   "promos": {
-    "1.12.2-latest": "0.11.2",
-    "1.12.2-recommended": "0.11.2"
+    "1.12.2-latest": "0.12",
+    "1.12.2-recommended": "0.12"
   },
   "1.12.2": {
     "0.6": "New model for K9",
@@ -16,6 +16,7 @@
     "0.10":"Add sound on laser shoot, save the battery when the world it's unloaded.",
     "0.11":"Add K9 remote, Bug fixes, Optimizations",
     "0.11.1":"Fix bug when double click on the remote in The Nether, security and stuff",
-    "0.11.2":"Fix bugs, optimizations, RemoteGui"
+    "0.11.2":"Fix bugs, optimizations, RemoteGui",
+    "0.12":"New K9 Model"
   }
 }
