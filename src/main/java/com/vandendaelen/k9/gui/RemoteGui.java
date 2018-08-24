@@ -1,6 +1,7 @@
 package com.vandendaelen.k9.gui;
 
 import com.vandendaelen.k9.K9;
+import com.vandendaelen.k9.packets.MessageK9Mode;
 import com.vandendaelen.k9.packets.MessageK9Teleport;
 import com.vandendaelen.k9.utils.K9Strings;
 import com.vandendaelen.k9.utils.Reference;
@@ -84,6 +85,7 @@ public class RemoteGui extends GuiScreen {
                 break;
             case BUTTON_MODE:
                 mode = clickMode(mode);
+                K9.NETWORK.sendToServer(new MessageK9Mode(mode, uuid));
             default:
                 break;
         }

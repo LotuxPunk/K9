@@ -4,6 +4,7 @@ import com.vandendaelen.k9.init.K9Blocks;
 import com.vandendaelen.k9.init.K9Entities;
 import com.vandendaelen.k9.init.K9Items;
 import com.vandendaelen.k9.init.K9Recipes;
+import com.vandendaelen.k9.packets.MessageK9Mode;
 import com.vandendaelen.k9.packets.MessageK9Piloting;
 import com.vandendaelen.k9.packets.MessageK9Teleport;
 import com.vandendaelen.k9.packets.MessageRemoteOpenGUI;
@@ -51,8 +52,9 @@ public class K9 {
         K9Blocks.init();
 
         NETWORK.registerMessage(MessageK9Piloting.Handler.class,MessageK9Piloting.class,1,Side.SERVER);
-        NETWORK.registerMessage(MessageK9Teleport.Handler.class,MessageK9Teleport.class,1,Side.SERVER);
+        NETWORK.registerMessage(MessageK9Teleport.Handler.class,MessageK9Teleport.class,2,Side.SERVER);
         NETWORK.registerMessage(MessageRemoteOpenGUI.Handler.class,MessageRemoteOpenGUI.class,3,Side.CLIENT);
+        NETWORK.registerMessage(MessageK9Mode.Handler.class,MessageK9Mode.class,4,Side.SERVER);
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
 
         proxy.preInit(e);

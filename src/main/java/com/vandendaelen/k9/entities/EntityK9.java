@@ -70,7 +70,16 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityMob.class, false));
+        switch (getMode()){
+            case 0:
+                break;
+            case 2:
+                this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, false));
+                break;
+            default:
+                this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityMob.class, false));
+                break;
+        }
     }
 
     @Override
