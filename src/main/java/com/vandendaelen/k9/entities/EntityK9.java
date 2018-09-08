@@ -11,6 +11,7 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemRedstone;
@@ -37,6 +38,9 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     private static final DataParameter<Boolean> IS_MARK_II = EntityDataManager.createKey(EntityK9.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> MODE = EntityDataManager.createKey(EntityK9.class,DataSerializers.VARINT);
 
+    private final EntityAINearestAttackableTarget full_mode = new EntityAINearestAttackableTarget(this, EntityLivingBase.class, false);
+    private final EntityAINearestAttackableTarget mob_mode = new EntityAINearestAttackableTarget(this, EntityMob.class, false);
+
     public static final int INVENTORY_SIZE = 9;
 
     private final int ENERGY_MAX = 100000;
@@ -61,7 +65,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(4, new EntityAIAttackRanged(this, 0.5D, 10, 25F));
         this.targetTasks.addTask(4, new EntityAIMoveTowardsTarget(this, 1.0D, 20));
-        this.tasks.addTask(3, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
+        this.tasks.addTask(2, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(6, new EntityAIMate(this, 1.0D));
         this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
         this.tasks.addTask(8, new EntityAIBeg(this, 8.0F));
@@ -70,16 +74,6 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
-        switch (getMode()){
-            case 0:
-                break;
-            case 2:
-                this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityLivingBase.class, false));
-                break;
-            default:
-                this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityMob.class, false));
-                break;
-        }
     }
 
     @Override
@@ -122,7 +116,21 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
 
         PlayerHelper.sendMessage(player, "Isn't your K9 !", true);
         return false;
+    }
 
+    private void applyK9Mode(int mode){
+        switch (mode){
+            case 1:
+                this.targetTasks.addTask(1,mob_mode);
+                break;
+            case 2:
+                this.targetTasks.removeTask(mob_mode);
+                this.targetTasks.addTask(1,full_mode);
+                break;
+            default:
+                this.targetTasks.removeTask(full_mode);
+                break;
+        }
     }
 
 
@@ -257,6 +265,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
 
     public void setMode(int value){
         this.dataManager.set(MODE,value);
+        applyK9Mode(value);
     }
 
     //Energy functions
