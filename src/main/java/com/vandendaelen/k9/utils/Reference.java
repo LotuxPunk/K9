@@ -3,7 +3,6 @@ package com.vandendaelen.k9.utils;
 public class Reference {
     public static final String MODID ="k9";
     public static final String NAME = "K9 Mod";
-    public static final String VERSION = "0.12";
     public static final String DEPENDENCIES = "required:forge@[14.23.4.2725,)";
 
     public static final String UPDATE_JSON = "https://raw.githubusercontent.com/LotuxPunk/K9/master/update.json";
@@ -18,4 +17,13 @@ public class Reference {
 
     public static final int GUI_ID_CONTAINER = 1;
     public static final int GUI_ID_REMOTE = 2;
+
+    public static class Version{
+        public static final String MCVERSION = "1.12.2";
+        public static final String MAJORMOD = "1";
+        public static final String MAJORAPI = "2";
+        public static final String MINOR = "0";
+        public static final String PATCH = "0";
+        public static final String VERSION = MCVERSION+"-"+MAJORMOD+"."+MAJORAPI+"."+MINOR+"."+PATCH;
+    }
 }
