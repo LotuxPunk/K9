@@ -3,6 +3,7 @@ package com.vandendaelen.k9.gui;
 import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.entities.EntityK9;
 import com.vandendaelen.k9.packets.MessageK9Piloting;
+import com.vandendaelen.k9.utils.K9Strings;
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
 import net.minecraft.client.Minecraft;
@@ -13,10 +14,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Loader;
 import net.tardis.mod.common.dimensions.TDimensions;
-import net.tardis.mod.util.helpers.TardisHelper;
+import net.tardis.mod.util.common.helpers.TardisHelper;
 
 import java.awt.*;
 import java.io.IOException;
@@ -33,17 +35,13 @@ public class K9Gui extends GuiContainer {
     private final int btnWidth = 60;
     private final int fieldHeight = 10;
     private final int fieldWidth = 50;
-    private final String btnConfirmText = "Allons-y !";
-    private final String btnContainerText = "Inventory";
 
     public GuiButton btnConfirm;
-    public GuiButton btnContainer;
     public GuiTextField xField;
     public GuiTextField yField;
     public GuiTextField zField;
 
     public final int BUTTON_CONFIRM = 0;
-    public final int BUTTON_CONTAINER = 1;
 
     public final int X_FIELD = 0;
     public final int Y_FIELD = 1;
@@ -81,8 +79,7 @@ public class K9Gui extends GuiContainer {
         int guiLastY = (height/2) + guiHeight/2;
 
         buttonList.clear();
-        buttonList.add(btnConfirm = new GuiButton(BUTTON_CONFIRM,guiLastX - 10 - btnWidth,centerY + 25,btnWidth,btnHeight,btnConfirmText));
-        //buttonList.add(btnContainer = new GuiButton(BUTTON_CONTAINER,guiLastX -10 - btnWidth,centerY + 25 + btnHeight + 2 ,btnWidth, btnHeight, btnContainerText));
+        buttonList.add(btnConfirm = new GuiButton(BUTTON_CONFIRM,guiLastX - 10 - btnWidth,centerY + 25,btnWidth,btnHeight,new TextComponentTranslation("k9.text.button.confirm").getUnformattedComponentText()));
         xField = new GuiTextField(X_FIELD,fontRenderer,centerX + 20,centerY + 26,fieldWidth,fieldHeight);
         yField = new GuiTextField(Y_FIELD,fontRenderer,centerX + 20,centerY + 26 + fieldHeight + 5,fieldWidth,fieldHeight);
         zField = new GuiTextField(Z_FIELD,fontRenderer,centerX + 20,centerY + 26 + fieldHeight * 2 + 10,fieldWidth,fieldHeight);
@@ -105,15 +102,15 @@ public class K9Gui extends GuiContainer {
                             Minecraft.getMinecraft().displayGuiScreen(null);
                         }
                         else{
-                            PlayerHelper.sendMessage(player,"You must be in the TARDIS to set coordinates with K9",true);
+                            PlayerHelper.sendMessage(player,new TextComponentTranslation(K9Strings.GuiText.MUST_BE_IN_THE_TARDIS).getUnformattedComponentText(),true);
                         }
                     }
                     else{
-                        PlayerHelper.sendMessage(player,"You must own a TARDIS before",true);
+                        PlayerHelper.sendMessage(player,new TextComponentTranslation(K9Strings.GuiText.OWN_TARDIS).getUnformattedComponentText(),true);
                     }
                 }
                 else{
-                    PlayerHelper.sendMessage(player,"TARDIS MOD not found",true);
+                    PlayerHelper.sendMessage(player,new TextComponentTranslation(K9Strings.GuiText.TARDIS_NOT_FOUND).getUnformattedComponentText(),true);
                 }
 
                 break;
@@ -134,7 +131,7 @@ public class K9Gui extends GuiContainer {
 
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         //drawTexturedModalRect(centerX,centerY,0,0,guiWidth,guiHeight);
-        fontRenderer.drawString("Battery level : "+ entity.getLevelEnergy()+"%",centerX + guiWidth/2 - 10,centerY + 27 + fieldHeight * 2 + 10,Color.red.getRGB(),false);
+        fontRenderer.drawString(new TextComponentTranslation("k9.text.battery_level").getUnformattedComponentText()+" : "+ entity.getLevelEnergy()+"%",centerX + guiWidth/2 - 10,centerY + 27 + fieldHeight * 2 + 10,Color.red.getRGB(),false);
 
         fontRenderer.drawString("X :",centerX+5,centerY + 26,Color.black.getRGB());
         fontRenderer.drawString("Y :",centerX+5,centerY + 26 + fieldHeight + 5,Color.black.getRGB());

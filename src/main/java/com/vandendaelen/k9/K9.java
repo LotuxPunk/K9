@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
 
-@Mod(modid = Reference.MODID, name =Reference.NAME , version =Reference.VERSION, dependencies = Reference.DEPENDENCIES, updateJSON = Reference.UPDATE_JSON)
+@Mod(modid = Reference.MODID, name =Reference.NAME , version =Reference.Version.VERSION, dependencies = Reference.DEPENDENCIES, updateJSON = Reference.UPDATE_JSON)
 public class K9 {
     @Instance(Reference.MODID)
     public static K9 instance;

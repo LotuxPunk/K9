@@ -19,7 +19,7 @@ jar {
     }
 }
 
-version = "0.12"
+version = "k9-1.12.2-1.2.0.2"
 group = "com.vandendaelen.k9" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "k9"
 
@@ -29,7 +29,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.4.2725"
+    version = "1.12.2-14.23.5.2768"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.

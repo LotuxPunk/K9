@@ -11,6 +11,17 @@ tile.ore_plaurium.name=Minerais de Plaurium
 
 k9.gui.text.teleport=Téleporter K9
 
-k9.mode.peaceful=Mode : Pacifique (DESACTIVE)
-k9.mode.mob_protect=Mode : Protection mob (DESACTIVE)
-k9.mode.full_protect=Mode : Protection complète (DESACTIVE)
+k9.mode.peaceful=Mode : Pacifique
+k9.mode.mob_protect=Mode : Protection mob
+k9.mode.full_protect=Mode : Protection complète
+
+k9.text.not_owner=Ce n'est pas votre K9 !
+k9.text.battery_level=Niveau d'énergie
+
+k9.text.button.confirm=Allons-y!
+k9.text.button.inventory=Inventaire
+
+k9.remote.tooltip=Vous devez être en survie pour créer le lien entre K9 et cette télécommande
+k9.gui.text.be_in_tardis=Vous devez être dans le TARDIS pour spécifier des coordonées
+k9.gui.text.own_tardis=Vous devez d'abord posséder un TARDIS
+k9.gui.text.not_found_tardis=Le New TARDIS Mod introuvable

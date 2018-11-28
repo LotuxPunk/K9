@@ -35,9 +35,7 @@ public class MessageRemoteOpenGUI implements IMessage {
 
     public static class Handler implements IMessageHandler<MessageRemoteOpenGUI, IMessage> {
 
-        public Handler() {
-            System.out.println("Instanciate");
-        }
+        public Handler() {}
 
         @Override
         public IMessage onMessage(MessageRemoteOpenGUI message, MessageContext ctx) {

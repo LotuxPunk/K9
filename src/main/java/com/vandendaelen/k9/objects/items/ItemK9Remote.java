@@ -3,6 +3,7 @@ package com.vandendaelen.k9.objects.items;
 import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.entities.EntityK9;
 import com.vandendaelen.k9.packets.MessageRemoteOpenGUI;
+import com.vandendaelen.k9.utils.K9Strings;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -11,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -40,7 +42,7 @@ public class ItemK9Remote extends ItemBase {
             tooltip.add("ID K9 " + this.getK9ID(stack).toString());
         }
         else {
-            tooltip.add("You should be in survival mod to set the link between K9 and this remote");
+            tooltip.add(new TextComponentTranslation(K9Strings.Remote.TOOLTIP).getUnformattedComponentText());
         }
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
