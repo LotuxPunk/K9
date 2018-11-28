@@ -1,5 +1,18 @@
 package com.vandendaelen.k9.entities;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.projectile.EntityThrowable;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+
 // From the New TARDIS Mod -> https://raw.githubusercontent.com/Spectre0987/TardisMod/master/src/main/java/net/tardis/mod/common/entities/EntityLaserRay.java
 public class EntityLaserRay extends EntityThrowable implements IEntityAdditionalSpawnData {
 
@@ -32,10 +45,10 @@ public class EntityLaserRay extends EntityThrowable implements IEntityAdditional
         if (result == null || isDead)
             return;
 
-        if (result.typeOfHit == Type.ENTITY) {
+        if (result.typeOfHit == RayTraceResult.Type.ENTITY) {
             if (result.entityHit == this.thrower) return;
             result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), damage);
-        } else if (result.typeOfHit == Type.BLOCK) {
+        } else if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
 
             IBlockState block = world.getBlockState(result.getBlockPos());
 

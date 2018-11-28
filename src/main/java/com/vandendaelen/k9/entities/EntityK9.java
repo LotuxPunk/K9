@@ -2,6 +2,8 @@ package com.vandendaelen.k9.entities;
 
 import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.objects.items.ItemK9Remote;
+import com.vandendaelen.k9.utils.K9Source;
+import com.vandendaelen.k9.utils.K9Strings;
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
@@ -11,7 +13,6 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemRedstone;
@@ -23,6 +24,8 @@ import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.util.*;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -114,21 +117,21 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
             }
         }
 
-        PlayerHelper.sendMessage(player, "Isn't your K9 !", true);
+        PlayerHelper.sendMessage(player, new TextComponentTranslation(K9Strings.K9.NOT_OWNER).getUnformattedComponentText(), true);
         return false;
     }
 
     private void applyK9Mode(int mode){
         switch (mode){
             case 1:
-                this.targetTasks.addTask(1,mob_mode);
+                this.tasks.addTask(1,mob_mode);
                 break;
             case 2:
-                this.targetTasks.removeTask(mob_mode);
-                this.targetTasks.addTask(1,full_mode);
+                this.tasks.removeTask(mob_mode);
+                this.tasks.addTask(1,full_mode);
                 break;
             default:
-                this.targetTasks.removeTask(full_mode);
+                this.tasks.removeTask(full_mode);
                 break;
         }
     }
@@ -170,14 +173,13 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         if(getBattery() >= ENERGY_RAY_CONSUMPTION){
             removeEnergy(ENERGY_RAY_CONSUMPTION);
             //look = target.getPositionVector().subtract(this.getPositionVector());
-            EntityLaserRay laser = new EntityLaserRay(world, this, 8, new TSource("K9"),new Vec3d(226,33,33));
+            EntityLaserRay laser = new EntityLaserRay(world, this, 8, new K9Source("K9"),new Vec3d(0,1,0));
 
             x = posX + this.getLookVec().x;
             y = posY + this.getEyeHeight();
             z = posZ + this.getLookVec().z;
-            double d3 = (double) MathHelper.sqrt(x * x + z * z);
 
-            laser.shoot(x, y + d3 * 0.20000000298023224D, z, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
+            laser.shoot(x, y, z, 1.6F, (float) (14 - this.world.getDifficulty().getDifficultyId() * 4));
             this.world.spawnEntity(laser);
 
             world.playSound(null,getPosition(),SoundHandler.ENTITY_K9_LASER_SHOOT,SoundCategory.HOSTILE,1F,1F);
