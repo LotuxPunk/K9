@@ -12,7 +12,6 @@ public class K9Entities {
 
     public static void registerEntities(){
         registerEntity("K9",EntityK9.class,Reference.ENTITY_K9,40,16711680,6245729);
-        registerEntity("Ray",EntityK9Ray.class, Reference.ENTITY_K9_RAY,30);
     }
 
     public static void registerEntity(String name, Class<? extends Entity> entity,int id, int range, int color1, int color2){
