@@ -170,14 +170,15 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         if(getBattery() >= ENERGY_RAY_CONSUMPTION){
             removeEnergy(ENERGY_RAY_CONSUMPTION);
             //look = target.getPositionVector().subtract(this.getPositionVector());
-            EntityK9Ray ray = new EntityK9Ray(world,this);
+            EntityLaserRay laser = new EntityLaserRay(world, this, 8, new TSource("K9"),new Vec3d(226,33,33));
 
             x = posX + this.getLookVec().x;
             y = posY + this.getEyeHeight();
             z = posZ + this.getLookVec().z;
+            double d3 = (double) MathHelper.sqrt(x * x + z * z);
 
-            ray.setPosition(x,y,z);
-            world.spawnEntity(ray);
+            laser.shoot(x, y + d3 * 0.20000000298023224D, z, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
+            this.world.spawnEntity(laser);
 
             world.playSound(null,getPosition(),SoundHandler.ENTITY_K9_LASER_SHOOT,SoundCategory.HOSTILE,1F,1F);
         }
