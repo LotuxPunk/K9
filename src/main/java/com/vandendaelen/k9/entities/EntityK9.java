@@ -56,6 +56,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     public EntityK9(World worldIn) {
         super(worldIn);
         this.setSize(0.6F, 0.85F);
+        applyK9Mode(MODE.getId());
     }
 
     @Override
@@ -77,6 +78,21 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
+    }
+
+    private void applyK9Mode(int mode){
+        switch (mode){
+            case 1:
+                this.targetTasks.addTask(1,mob_mode);
+                break;
+            case 2:
+                this.targetTasks.removeTask(mob_mode);
+                this.targetTasks.addTask(1,full_mode);
+                break;
+            default:
+                this.targetTasks.removeTask(full_mode);
+                break;
+        }
     }
 
     @Override
@@ -120,24 +136,6 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         PlayerHelper.sendMessage(player, new TextComponentTranslation(K9Strings.K9.NOT_OWNER).getUnformattedComponentText(), true);
         return false;
     }
-
-    private void applyK9Mode(int mode){
-        switch (mode){
-            case 1:
-                this.tasks.addTask(1,mob_mode);
-                break;
-            case 2:
-                this.tasks.removeTask(mob_mode);
-                this.tasks.addTask(1,full_mode);
-                break;
-            default:
-                this.tasks.removeTask(full_mode);
-                break;
-        }
-    }
-
-
-
 
     @Override
     protected PathNavigate createNavigator(World worldIn) {
