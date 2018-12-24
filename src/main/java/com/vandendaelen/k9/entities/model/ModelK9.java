@@ -1,7 +1,9 @@
 package com.vandendaelen.k9.entities.model;
 
+import com.vandendaelen.k9.entities.render.ModelRendererGlow;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 
 /**
@@ -37,7 +39,7 @@ public class ModelK9 extends ModelBase {
         this.snout = new ModelRenderer(this, 0, 24);
         this.snout.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.snout.addBox(-1.5F, -1.0F, -6.0F, 3, 2, 4, 0.0F);
-        this.eyes = new ModelRenderer(this, 0, 20);
+		this.eyes = new ModelRendererGlow(this, 0, 20);
         this.eyes.setRotationPoint(0.0F, 0.0F, 0.0F);
         this.eyes.addBox(-1.5F, -1.5F, -4.0F, 3, 2, 1, 0.0F);
         this.setRotateAngle(eyes, -0.3490658503988659F, 0.0F, 0.0F);
@@ -88,7 +90,12 @@ public class ModelK9 extends ModelBase {
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         this.tail.render(f5);
         this.base.render(f5);
+	
+		GlStateManager.pushMatrix();
+		float rot = (float) Math.toDegrees(f4 / (180F / (float) Math.PI)) / 1.5F;
+		GlStateManager.rotate(rot, 1, 0, 0);
         this.head.render(f5);
+		GlStateManager.popMatrix();
     }
 
     /**
@@ -99,18 +106,4 @@ public class ModelK9 extends ModelBase {
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
     }
-
-    /*@Override
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn){
-        this.head.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.head.rotateAngleX = headPitch * 0.017453292F;
-        this.eyes.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.eyes.rotateAngleX = headPitch * 0.017453292F;
-        this.earl.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.earl.rotateAngleX = headPitch * 0.017453292F;
-        this.earr.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.earr.rotateAngleX = headPitch * 0.017453292F;
-        this.snout.rotateAngleY = netHeadYaw * 0.017453292F;
-        this.snout.rotateAngleX = headPitch * 0.017453292F;
-    }*/
 }
