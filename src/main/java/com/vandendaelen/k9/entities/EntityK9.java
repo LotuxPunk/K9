@@ -106,8 +106,8 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
 
             if (player.getHeldItem(hand).getItem() instanceof ItemK9Remote){
                 ItemK9Remote remote = (ItemK9Remote) player.getHeldItem(hand).getItem();
-                ItemK9Remote.setK9ID(player.getHeldItem(hand), this.getUniqueID());
-                K9.logger.debug(ItemK9Remote.getK9ID(player.getHeldItem(hand)));
+                remote.setK9ID(player.getHeldItem(hand), this.getUniqueID());
+                K9.logger.debug(remote.getK9ID(player.getHeldItem(hand)));
                 return true;
             }
 
