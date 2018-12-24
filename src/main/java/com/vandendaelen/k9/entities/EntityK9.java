@@ -40,9 +40,9 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     private static final DataParameter<Integer> BATTERY = EntityDataManager.createKey(EntityK9.class,DataSerializers.VARINT);
     private static final DataParameter<Boolean> IS_MARK_II = EntityDataManager.createKey(EntityK9.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> MODE = EntityDataManager.createKey(EntityK9.class,DataSerializers.VARINT);
-
-    private final EntityAINearestAttackableTarget full_mode = new EntityAINearestAttackableTarget(this, EntityLivingBase.class, false);
-    private final EntityAINearestAttackableTarget mob_mode = new EntityAINearestAttackableTarget(this, EntityMob.class, false);
+    
+    private final EntityAINearestAttackableTarget<EntityLivingBase> full_mode = new EntityAINearestAttackableTarget<>(this, EntityLivingBase.class, false);
+    private final EntityAINearestAttackableTarget<EntityMob> mob_mode = new EntityAINearestAttackableTarget<>(this, EntityMob.class, false);
 
     public static final int INVENTORY_SIZE = 9;
 
@@ -76,7 +76,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         this.tasks.addTask(3, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
         this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
-        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
+        this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
     }
 
     @Override
