@@ -44,12 +44,12 @@ minecraft {
     version = "1.12.2-14.23.5.2768"
     runDir = "run"
 
-    mappings = "snapshot_20180629"
+    mappings = "stable_39"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
 dependencies {
-    compileOnly "com.github.Spectre0987:TardisMod:${project.tardis_version}"
+    deobfCompile "com.github.Spectre0987:TardisMod:${project.tardis_version}"
 
     compileOnly "net.industrial-craft:industrialcraft-2:${project.ic2ex_version}:api"
 }

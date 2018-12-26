@@ -177,7 +177,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
             y = posY + this.getEyeHeight();
             z = posZ + this.getLookVec().z;
 
-            laser.shoot(x, y, z, 1.6F, (float) (14 - this.world.getDifficulty().getDifficultyId() * 4));
+            laser.shoot(x, y, z, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
             this.world.spawnEntity(laser);
 
             world.playSound(null,getPosition(),SoundHandler.ENTITY_K9_LASER_SHOOT,SoundCategory.HOSTILE,1F,1F);

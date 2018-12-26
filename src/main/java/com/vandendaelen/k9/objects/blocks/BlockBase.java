@@ -8,7 +8,7 @@ public class BlockBase extends Block {
 
     public BlockBase(String name, Material material) {
         super(material);
-        setUnlocalizedName(name);
+        setTranslationKey(name);
         setRegistryName(name);
         setCreativeTab(K9.k9Tab);
     }

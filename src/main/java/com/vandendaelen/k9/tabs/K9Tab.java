@@ -11,7 +11,7 @@ public class K9Tab extends CreativeTabs {
     }
 
     @Override
-    public ItemStack getTabIconItem() {
+    public ItemStack createIcon() {
         return new ItemStack(K9Items.ingot_plaurium);
     }
 }
