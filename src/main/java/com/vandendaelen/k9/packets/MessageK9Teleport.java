@@ -2,9 +2,11 @@ package com.vandendaelen.k9.packets;
 
 import com.vandendaelen.k9.entities.EntityK9;
 import com.vandendaelen.k9.utils.K9Teleporter;
+import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -42,7 +44,10 @@ public class MessageK9Teleport implements IMessage {
                 public void run() {
                     EntityPlayerMP player= ctx.getServerHandler().player;
                     EntityK9 k9 = (EntityK9)player.getServerWorld().getEntityFromUuid(message.uuid);
-                    if (k9 != null) K9Teleporter.move(k9, player.dimension, player.getPosition());
+                    if (k9 != null) {
+                        K9Teleporter.move(k9, player.dimension, player.getPosition());
+                        ctx.getServerHandler().player.world.playSound(null,k9.getPosition(), SoundHandler.ENTITY_K9_MASTER, SoundCategory.NEUTRAL,1F,1F);
+                    }
                 }
             });
             return null;

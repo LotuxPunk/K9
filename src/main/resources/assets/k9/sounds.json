@@ -34,5 +34,32 @@
       "name":"k9:entity/k9/laser_shoot",
       "stream":true
     }]
+  },
+  "k9_affirmative":
+  {
+    "category":"neutral",
+    "subtitle":"k9_affirmative",
+    "sounds":[{
+      "name":"k9:entity/k9/affirmative",
+      "stream":true
+    }]
+  },
+  "k9_master":
+  {
+    "category":"neutral",
+    "subtitle":"k9_master",
+    "sounds":[{
+      "name":"k9:entity/k9/master",
+      "stream":true
+    }]
+  },
+  "k9_your_sillyness_is_noted":
+  {
+    "category":"neutral",
+    "subtitle":"k9_your_sillyness_is_noted",
+    "sounds":[{
+      "name":"k9:entity/k9/your_sillyness_is_noted",
+      "stream":true
+    }]
   }
 }
