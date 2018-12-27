@@ -6,6 +6,7 @@ import com.vandendaelen.k9.utils.K9Source;
 import com.vandendaelen.k9.utils.K9Strings;
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.handlers.SoundHandler;
+import com.vandendaelen.k9.utils.helpers.K9Helper;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -327,5 +328,11 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
 
     public int getBattery(){
         return this.dataManager.get(BATTERY);
+    }
+
+    @Override
+    public void onDeath(DamageSource p_onDeath_1_) {
+        super.onDeath(p_onDeath_1_);
+        K9Helper.removeK9(getOwnerId(),getUniqueID());
     }
 }
