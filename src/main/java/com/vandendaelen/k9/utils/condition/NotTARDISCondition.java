@@ -1,6 +1,7 @@
 package com.vandendaelen.k9.utils.condition;
 
 import com.google.gson.JsonObject;
+import com.vandendaelen.k9.utils.Reference;
 import net.minecraftforge.common.crafting.IConditionFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.fml.common.Loader;
@@ -14,7 +15,7 @@ public class NotTARDISCondition implements IConditionFactory {
 
             @Override
             public boolean getAsBoolean() {
-                return !(Loader.isModLoaded("tardis"));
+                return !(Loader.isModLoaded(Reference.TARDIS_MODID));
             }};
     }
 }

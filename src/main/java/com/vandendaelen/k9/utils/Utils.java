@@ -6,23 +6,15 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.opengl.GL11;
-
-import java.util.UUID;
 
 import static net.minecraft.client.renderer.OpenGlHelper.lastBrightnessX;
 import static net.minecraft.client.renderer.OpenGlHelper.lastBrightnessY;
 import static net.tardis.mod.util.client.RenderHelper.setLightmapTextureCoords;
 
 public class Utils {
-
-    public static EntityPlayer getPlayer (UUID id){
-        return Minecraft.getMinecraft().world.getPlayerEntityByUUID(id);
-    }
-
     // From the New TARDIS Mod : https://github.com/Spectre0987/TardisMod/blob/602185aa3d96eb0aca71daa493d1bc90fb7a465e/src/main/java/net/tardis/mod/util/client/RenderHelper.java
 
     public static void setupRenderLightning() {

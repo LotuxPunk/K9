@@ -10,9 +10,6 @@ public class Reference {
     public static final String CLIENT_PROXY = "com.vandendaelen.k9.proxy.ClientProxy";
     public static final String SERVER_PROXY = "com.vandendaelen.k9.proxy.ServerProxy";
 
-    public static final int ENTITY_K9 = 42;
-    public static final int ENTITY_K9_RAY = 43;
-
     public static final String TARDIS_MODID = "tardis";
 
     public static final int GUI_ID_CONTAINER = 1;
@@ -21,7 +18,7 @@ public class Reference {
     public static class Version{
         public static final String MCVERSION = "1.12.2";
         public static final String MAJORMOD = "1";
-        public static final String MAJORAPI = "2";
+        public static final String MAJORAPI = "3";
         public static final String MINOR = "1";
         public static final String PATCH = "2";
         public static final String VERSION = MCVERSION+"-"+MAJORMOD+"."+MAJORAPI+"."+MINOR+"."+PATCH;
