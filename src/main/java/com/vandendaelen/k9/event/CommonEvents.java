@@ -55,7 +55,6 @@ public class CommonEvents {
         if (K9Helper.hasK9(event.player.getUniqueID())){
             EntityK9 k9 = (EntityK9) event.player.world.getMinecraftServer().getEntityFromUuid(K9Helper.getK9(event.player.getUniqueID()));
             if (k9 != null) K9Teleporter.move(k9,event.toDim,event.player.getPosition());
-            //TODO : Manage bug with TARDIS
         }
     }
 }
