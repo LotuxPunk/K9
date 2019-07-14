@@ -332,7 +332,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
 
     @Override
     public void onDeath(DamageSource p_onDeath_1_) {
-        super.onDeath(p_onDeath_1_);
         K9Helper.removeK9(getOwnerId(),getUniqueID());
+        super.onDeath(p_onDeath_1_);
     }
 }

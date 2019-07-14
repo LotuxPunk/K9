@@ -1,5 +1,6 @@
 package com.vandendaelen.k9;
 
+import com.vandendaelen.k9.command.K9Command;
 import com.vandendaelen.k9.init.K9Blocks;
 import com.vandendaelen.k9.init.K9Entities;
 import com.vandendaelen.k9.init.K9Items;
@@ -16,12 +17,13 @@ import com.vandendaelen.k9.utils.handlers.SoundHandler;
 import com.vandendaelen.k9.world.gen.OreGen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -76,5 +78,10 @@ public class K9 {
     @EventHandler
     public void postInit(FMLPostInitializationEvent e){
         logger.info("postInit :");
+    }
+
+    @EventHandler
+    public void serverStarting(FMLServerStartingEvent event) {
+        event.registerServerCommand(new K9Command());
     }
 }
