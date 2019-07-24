@@ -1,5 +1,6 @@
 package com.vandendaelen.k9.proxy;
 
+import com.vandendaelen.k9.entities.EntityK9;
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.handlers.RenderHandler;
 import net.minecraft.block.Block;
@@ -7,6 +8,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -15,6 +17,7 @@ public class ClientProxy implements IProxy{
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         RenderHandler.registerEntityRenders();
+        ClientRegistry.registerEntityShader(EntityK9.class, new ResourceLocation("shaders/post/ntsc.json"));
     }
 
     @Override

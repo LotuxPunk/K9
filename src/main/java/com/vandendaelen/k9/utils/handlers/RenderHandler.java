@@ -4,6 +4,8 @@ import com.vandendaelen.k9.entities.EntityK9;
 import com.vandendaelen.k9.entities.EntityLaserRay;
 import com.vandendaelen.k9.entities.render.RenderK9;
 import com.vandendaelen.k9.entities.render.RenderLaserRay;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class RenderHandler {
