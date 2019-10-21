@@ -169,11 +169,11 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
         double x, y, z;
         //Vec3d look;
-        if(getBattery() >= ENERGY_RAY_CONSUMPTION){
-            removeEnergy(ENERGY_RAY_CONSUMPTION);
+   //     if(getBattery() >= ENERGY_RAY_CONSUMPTION){
+    //        removeEnergy(ENERGY_RAY_CONSUMPTION);
             //look = target.getPositionVector().subtract(this.getPositionVector());
             EntityLaserRay laser = new EntityLaserRay(world, this, 8, new K9Source("K9"),new Vec3d(0,1,0));
-
+            laser.setThrowerId(getEntityId());
             x = posX + this.getLookVec().x;
             y = posY + this.getEyeHeight();
             z = posZ + this.getLookVec().z;
@@ -182,10 +182,10 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
             this.world.spawnEntity(laser);
 
             world.playSound(null,getPosition(),SoundHandler.ENTITY_K9_LASER_SHOOT,SoundCategory.HOSTILE,1F,1F);
-        }
-        else {
+      //  }
+    //    else {
             //Todo Add a sound when K9 can't shoot
-        }
+    //    }
 
     }
 

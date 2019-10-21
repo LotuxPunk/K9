@@ -6,6 +6,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -19,6 +22,8 @@ public class EntityLaserRay extends EntityThrowable implements IEntityAdditional
     public float damage;
     public Vec3d color;
     private DamageSource source;
+    private static final DataParameter<Integer> THROWER_ID = EntityDataManager.createKey(EntityK9.class, DataSerializers.VARINT);
+
 
     public EntityLaserRay(World worldIn) {
         super(worldIn);
@@ -30,6 +35,25 @@ public class EntityLaserRay extends EntityThrowable implements IEntityAdditional
         this.color = color;
         this.source = source;
     }
+
+    @Override
+    protected void entityInit() {
+        super.entityInit();
+        getDataManager().register(THROWER_ID, -1);
+    }
+
+    public int getThrowerID(){
+      return getDataManager().get(THROWER_ID);
+    }
+
+    public void setThrowerId(int id){
+        getDataManager().set(THROWER_ID, id);
+    }
+
+
+
+
+
 
     @Override
     public void onEntityUpdate() {
@@ -48,14 +72,6 @@ public class EntityLaserRay extends EntityThrowable implements IEntityAdditional
         if (result.typeOfHit == RayTraceResult.Type.ENTITY) {
             if (result.entityHit == this.thrower) return;
             result.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getThrower()), damage);
-        } else if (result.typeOfHit == RayTraceResult.Type.BLOCK) {
-
-            IBlockState block = world.getBlockState(result.getBlockPos());
-
-            if (block.getBlock() == Blocks.TNT) {
-                //	BlockTNT tnt = (BlockTNT) block;
-                //tnt.explode(world, result.getBlockPos(), block, getThrower());
-            }
         }
 
         if (!this.world.isRemote)
