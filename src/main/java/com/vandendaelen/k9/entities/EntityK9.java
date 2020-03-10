@@ -40,6 +40,9 @@ public class EntityK9 extends EntityWolf implements IEnergyStorage {
     private static final DataParameter<Integer> BATTERY = EntityDataManager.createKey(EntityK9.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> IS_MARK_II = EntityDataManager.createKey(EntityK9.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Integer> MODE = EntityDataManager.createKey(EntityK9.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> TARGET = EntityDataManager.createKey(EntityK9.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> IS_FIRING = EntityDataManager.createKey(EntityK9.class, DataSerializers.BOOLEAN);
+
 
     private final EntityAINearestAttackableTarget<EntityLivingBase> full_mode = new EntityAINearestAttackableTarget<>(this, EntityLivingBase.class, false);
     private final EntityAINearestAttackableTarget<EntityMob> mob_mode = new EntityAINearestAttackableTarget<>(this, EntityMob.class, false);
@@ -56,7 +59,7 @@ public class EntityK9 extends EntityWolf implements IEnergyStorage {
     public EntityK9(World worldIn) {
         super(worldIn);
         this.setSize(0.6F, 0.85F);
-        applyK9Mode(MODE.getId());
+        applyK9Mode(getMode());
     }
 
     @Override
@@ -92,7 +95,6 @@ public class EntityK9 extends EntityWolf implements IEnergyStorage {
 
         this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + this.rand.nextDouble() - 0.5D, this.posY, this.posZ + this.rand.nextDouble() - 0.5D, this.motionX * -0.5D, this.motionY * -0.5D - 0.07D, this.motionZ * -0.5D);
 
-
         if (getAttackTarget() != null) {
             faceEntity(getAttackTarget(), 100.0F, 100.0F);
             Vec3d vec3d = getLook(1.0F).normalize();
@@ -100,11 +102,15 @@ public class EntityK9 extends EntityWolf implements IEnergyStorage {
             vec3d1 = vec3d1.normalize();
             double d1 = vec3d.dotProduct(vec3d1) * -1.0D;
             if (d1 > ((getDistance(getAttackTarget()) < 2.0F) ? 0.9D : 0.7D)) {
+                setTargetID(getAttackTarget().getEntityId());
+                setIsFiring(true);
                 if (ticksExisted % 40 == 0) {
-                    playSound(SoundHandler.ENTITY_K9_LASER_SHOOT, 1, 1);
+                    playSound(SoundHandler.ENTITY_K9_LASER_SHOOT, 0.3F, 1);
                 }
                 K9Source source = new K9Source("k9_laser").setOwner(getOwnerId());
                 getAttackTarget().attackEntityFrom(source, 3);
+            } else {
+                setIsFiring(false);
             }
         }
     }
@@ -133,9 +139,11 @@ public class EntityK9 extends EntityWolf implements IEnergyStorage {
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.dataManager.register(BATTERY, 0);
-        this.dataManager.register(IS_MARK_II, rand.nextInt(10) >= 5);
-        this.dataManager.register(MODE, 1);
+        this.getDataManager().register(BATTERY, 0);
+        this.getDataManager().register(IS_MARK_II, rand.nextInt(10) >= 5);
+        this.getDataManager().register(MODE, 1);
+        this.getDataManager().register(TARGET, -1);
+        this.getDataManager().register(IS_FIRING, false);
     }
 
     @Override
@@ -217,7 +225,28 @@ public class EntityK9 extends EntityWolf implements IEnergyStorage {
             setMode(compound.getInteger("mode"));
         }
 
+        if (compound.hasKey("target")) {
+            setTargetID(compound.getInteger("target"));
+        }
+
     }
+
+    public void setTargetID(int target) {
+        getDataManager().set(TARGET, target);
+    }
+
+    public int getTargetID() {
+        return getDataManager().get(TARGET);
+    }
+
+    public boolean getIsFiring() {
+        return getDataManager().get(IS_FIRING);
+    }
+
+    public void setIsFiring(boolean firing){
+        getDataManager().set(IS_FIRING, firing);
+    }
+
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
@@ -227,6 +256,7 @@ public class EntityK9 extends EntityWolf implements IEnergyStorage {
         compound.setTag("items", itemStackHandler.serializeNBT());
         compound.setBoolean("mark2", isMarkII());
         compound.setInteger("mode", getMode());
+        compound.setInteger("target", getTargetID());
         return compound;
     }
 

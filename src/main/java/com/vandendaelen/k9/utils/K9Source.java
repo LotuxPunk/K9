@@ -11,6 +11,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import org.apache.commons.io.IOUtils;
 
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.UUID;
 
 public class K9Source extends DamageSource {
@@ -51,11 +52,11 @@ public class K9Source extends DamageSource {
     public String getUserName(String uuid) {
         String url = "https://api.mojang.com/user/profiles/" + uuid.replace("-", "") + "/names";
         try {
-            String json = IOUtils.toString(new URL(url));
+            String json = IOUtils.toString(new URL(url), Charset.defaultCharset());
             JsonElement element = new JsonParser().parse(json);
             JsonArray nameArray = element.getAsJsonArray();
             JsonObject nameElement = nameArray.get(nameArray.size() - 1).getAsJsonObject();
-            nameElement.get("name").toString();
+            return nameElement.get("name").toString();
         } catch (Exception e) {
             e.printStackTrace();
         }
