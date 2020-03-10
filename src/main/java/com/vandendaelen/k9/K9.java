@@ -28,6 +28,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
@@ -38,18 +39,14 @@ public class K9 {
     public static SimpleNetworkWrapper NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MODID);
 
     public static final CreativeTabs k9Tab = new K9Tab("k9tab");
-    public static Logger logger;
+    public static Logger logger = LogManager.getLogger(Reference.NAME);
 
     @SidedProxy(modId =Reference.MODID,clientSide = Reference.CLIENT_PROXY,serverSide = Reference.SERVER_PROXY)
     public static IProxy proxy;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent e){
-        logger = e.getModLog();
-        logger.info("preInit :");
-
         K9Entities.registerEntities();
-
         K9Items.init();
         K9Blocks.init();
 
@@ -58,13 +55,13 @@ public class K9 {
         NETWORK.registerMessage(MessageRemoteOpenGUI.Handler.class,MessageRemoteOpenGUI.class,3,Side.CLIENT);
         NETWORK.registerMessage(MessageK9Mode.Handler.class,MessageK9Mode.class,4,Side.SERVER);
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiProxy());
-
+        logger.info("Pre-Init");
         proxy.preInit(e);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent e){
-        logger.info("init :");
+        logger.info("Init");
 
         proxy.init(e);
 
@@ -77,7 +74,7 @@ public class K9 {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent e){
-        logger.info("postInit :");
+        logger.info("Post-Init");
     }
 
     @EventHandler
