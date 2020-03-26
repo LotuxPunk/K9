@@ -92,7 +92,6 @@ public class EntityK9 extends EntityWolf implements IEnergyStorage {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        setNoAI(true);
 
         if (world.isRemote) {
             this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + this.rand.nextDouble() - 0.5D, this.posY, this.posZ + this.rand.nextDouble() - 0.5D, this.motionX * -0.5D, this.motionY * -0.5D - 0.07D, this.motionZ * -0.5D);

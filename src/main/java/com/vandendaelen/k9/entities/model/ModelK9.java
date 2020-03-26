@@ -8,6 +8,8 @@ import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -261,7 +263,17 @@ public class ModelK9 extends ModelBase implements RenderText.IRenderText {
 
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn) {
+        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scaleFactor, entityIn);
+        tail.rotateAngleX = -MathHelper.cos(ageInTicks * 0.1F) * -0.5F;
+        earright.rotateAngleY = -MathHelper.cos(ageInTicks * 0.1F) * -0.5F;
+        earleft.rotateAngleY = MathHelper.cos(ageInTicks * 0.1F) * -0.5F;
+        boolean flag = entityIn instanceof EntityLivingBase && ((EntityLivingBase) entityIn).getTicksElytraFlying() > 4;
 
+        if (flag) {
+            this.head.rotateAngleX = -((float) Math.PI / 4F);
+        } else {
+            this.head.rotateAngleX = headPitch * 0.017453292F;
+        }
     }
 
     @Override
@@ -281,6 +293,7 @@ public class ModelK9 extends ModelBase implements RenderText.IRenderText {
         GlStateManager.rotate(90, 0, 1, 0);
         GlStateManager.translate(0, 0, -0.2);
         for (RenderText textPiece : this.textToRender) {
+            textPiece.setSmall(false);
             textPiece.renderText();
         }
         GlStateManager.popMatrix();

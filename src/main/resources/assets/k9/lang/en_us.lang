@@ -27,4 +27,4 @@ k9.gui.text.be_in_tardis=You must be in the TARDIS to set coordinates with K9
 k9.gui.text.own_tardis=You must own a TARDIS before
 k9.gui.text.not_found_tardis=TARDIS MOD is not Installed
 
-damagesrc.k9.k9_laser=%s was killed by 5s's K9 Unit
+damagesrc.k9.k9_laser=%s was killed by %s's K9 Unit
