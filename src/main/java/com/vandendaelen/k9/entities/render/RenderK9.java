@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 
 public class RenderK9 extends RenderLiving<EntityK9> {
 
-    private final ResourceLocation TEXTURES_OLD = new ResourceLocation(Reference.MODID + ":textures/entity/k9.png");
+    private final ResourceLocation TEXTURES_OLD = new ResourceLocation(Reference.MODID, "textures/entity/k9.png");
 
     private ModelBase modelK9 = new ModelK9();
     private Item item = K9Items.dummy_k9;

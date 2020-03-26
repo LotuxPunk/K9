@@ -1,17 +1,13 @@
 package com.vandendaelen.k9.utils;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.server.management.PlayerProfileCache;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
-import org.apache.commons.io.IOUtils;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.UUID;
 
 public class K9Source extends DamageSource {
@@ -30,9 +26,14 @@ public class K9Source extends DamageSource {
         this(name, false);
     }
 
-    @Override
-    public ITextComponent getDeathMessage(EntityLivingBase entity) {
-        return new TextComponentTranslation(message, entity.getName(), getUserName(owner.toString()));
+    public static String getUserName(UUID uuid) {
+        if (FMLCommonHandler.instance().getMinecraftServerInstance() == null || uuid == null) return "Unknown Timelord";
+        PlayerProfileCache cache = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerProfileCache();
+        GameProfile profile = cache.getProfileByUUID(uuid);
+        if (profile != null) {
+            return profile.getName();
+        }
+        return "Unknown Timelord";
     }
 
     public UUID getOwner() {
@@ -49,18 +50,9 @@ public class K9Source extends DamageSource {
         return !blockable;
     }
 
-    public String getUserName(String uuid) {
-        String url = "https://api.mojang.com/user/profiles/" + uuid.replace("-", "") + "/names";
-        try {
-            String json = IOUtils.toString(new URL(url), Charset.defaultCharset());
-            JsonElement element = new JsonParser().parse(json);
-            JsonArray nameArray = element.getAsJsonArray();
-            JsonObject nameElement = nameArray.get(nameArray.size() - 1).getAsJsonObject();
-            return nameElement.get("name").toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
+    @Override
+    public ITextComponent getDeathMessage(EntityLivingBase entity) {
+        return new TextComponentTranslation(message, entity.getName(), getUserName(owner));
     }
 
 }
