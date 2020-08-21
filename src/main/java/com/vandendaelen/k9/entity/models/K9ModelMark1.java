@@ -1,5 +1,6 @@
-package com.vandendaelen.k9.entity;
+package com.vandendaelen.k9.entity.models;
 
+import com.vandendaelen.k9.entity.K9Entity;
 import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 
@@ -7,7 +8,7 @@ import net.minecraft.client.renderer.entity.model.RendererModel;
  * K9 - RebelT
  * Created using Tabula 7.1.0
  */
-public class K9Model extends EntityModel<K9Entity> {
+public class K9ModelMark1 extends EntityModel<K9Entity> {
     public RendererModel base;
     public RendererModel body;
     public RendererModel keypad;
@@ -25,7 +26,7 @@ public class K9Model extends EntityModel<K9Entity> {
     public RendererModel earRight2;
     public RendererModel earLeft2;
 
-    public K9Model() {
+    public K9ModelMark1() {
         this.textureWidth = 64;
         this.textureHeight = 64;
         this.keypad = new RendererModel(this, 0, 22);

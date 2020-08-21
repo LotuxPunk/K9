@@ -2,7 +2,8 @@ package com.vandendaelen.k9.setup;
 
 import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.entity.K9Entity;
-import com.vandendaelen.k9.entity.K9EntityRenderer;
+import com.vandendaelen.k9.entity.renderer.K9EntityMark1Renderer;
+import com.vandendaelen.k9.entity.renderer.K9EntityMark2Renderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,7 +15,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientSetup {
 
     public static void init(final FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(K9Entity.class, K9EntityRenderer::new);
+        //RenderingRegistry.registerEntityRenderingHandler(K9Entity.class, K9EntityMark1Renderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(K9Entity.class, K9EntityMark2Renderer::new);
+
     }
 
     @SubscribeEvent
