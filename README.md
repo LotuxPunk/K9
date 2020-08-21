@@ -1,7 +1,5 @@
 # K9
 
-# 1.13 repo here https://github.com/LotuxPunk/K-9-1.13
-
 I saw the mod with a TARDIS, and I thought there was something missing in Minecraft on Doctor Who, K9!
 
 If you didn't know it K9 is literally the Doctor's robot dog (a bit forgotten in the 2008 season) and so I put myself in the head to create this mod. This is my first mod, but I know java, so it should pass.
