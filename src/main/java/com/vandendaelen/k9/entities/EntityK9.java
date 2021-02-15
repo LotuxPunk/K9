@@ -10,7 +10,6 @@ import com.vandendaelen.k9.utils.helpers.K9Helper;
 import com.vandendaelen.k9.utils.helpers.PlayerHelper;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
@@ -36,12 +35,15 @@ import net.minecraftforge.items.ItemStackHandler;
 import java.util.UUID;
 
 
-public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergyStorage {
+public class EntityK9 extends EntityWolf implements IEnergyStorage {
 
-    private static final DataParameter<Integer> BATTERY = EntityDataManager.createKey(EntityK9.class,DataSerializers.VARINT);
+    private static final DataParameter<Integer> BATTERY = EntityDataManager.createKey(EntityK9.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> IS_MARK_II = EntityDataManager.createKey(EntityK9.class, DataSerializers.BOOLEAN);
-    private static final DataParameter<Integer> MODE = EntityDataManager.createKey(EntityK9.class,DataSerializers.VARINT);
-    
+    private static final DataParameter<Integer> MODE = EntityDataManager.createKey(EntityK9.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> TARGET = EntityDataManager.createKey(EntityK9.class, DataSerializers.VARINT);
+    private static final DataParameter<Boolean> IS_FIRING = EntityDataManager.createKey(EntityK9.class, DataSerializers.BOOLEAN);
+
+
     private final EntityAINearestAttackableTarget<EntityLivingBase> full_mode = new EntityAINearestAttackableTarget<>(this, EntityLivingBase.class, false);
     private final EntityAINearestAttackableTarget<EntityMob> mob_mode = new EntityAINearestAttackableTarget<>(this, EntityMob.class, false);
 
@@ -57,7 +59,7 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     public EntityK9(World worldIn) {
         super(worldIn);
         this.setSize(0.6F, 0.85F);
-        applyK9Mode(MODE.getId());
+        applyK9Mode(getMode());
     }
 
     @Override
@@ -68,7 +70,6 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         enablePersistence();
 
         this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(4, new EntityAIAttackRanged(this, 0.5D, 10, 25F));
         this.targetTasks.addTask(4, new EntityAIMoveTowardsTarget(this, 1.0D, 20));
         this.tasks.addTask(2, new EntityAIFollowOwner(this, 1.0D, 10.0F, 2.0F));
         this.tasks.addTask(6, new EntityAIMate(this, 1.0D));
@@ -81,27 +82,54 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true));
     }
 
-    private void applyK9Mode(int mode){
-        switch (mode){
+    private ItemStackHandler itemStackHandler = new ItemStackHandler(INVENTORY_SIZE) {
+        @Override
+        protected void onContentsChanged(int slot) {
+
+        }
+    };
+
+    @Override
+    public void onUpdate() {
+        super.onUpdate();
+
+        if (world.isRemote) {
+            this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, this.posX + this.rand.nextDouble() - 0.5D, this.posY, this.posZ + this.rand.nextDouble() - 0.5D, this.motionX * -0.5D, this.motionY * -0.5D - 0.07D, this.motionZ * -0.5D);
+        }
+
+        if (getAttackTarget() != null) {
+            faceEntity(getAttackTarget(), 100.0F, 100.0F);
+            Vec3d vec3d = getLook(1.0F).normalize();
+            Vec3d vec3d1 = new Vec3d(this.posX - (getAttackTarget()).posX, this.getEntityBoundingBox().minY + (this.height / 2.0F) - (getAttackTarget()).posY, this.posZ - (getAttackTarget()).posZ);
+            vec3d1 = vec3d1.normalize();
+            double d1 = vec3d.dotProduct(vec3d1) * -1.0D;
+            if (d1 > ((getDistance(getAttackTarget()) < 2.0F) ? 0.9D : 0.7D)) {
+                setTargetID(getAttackTarget().getEntityId());
+                setIsFiring(true);
+                if (ticksExisted % 40 == 0) {
+                    playSound(SoundHandler.ENTITY_K9_LASER_SHOOT, 0.3F, 1);
+                }
+                K9Source source = new K9Source("k9_laser").setOwner(getOwnerId());
+                getAttackTarget().attackEntityFrom(source, 3);
+            } else {
+                setIsFiring(false);
+            }
+        }
+    }
+
+    private void applyK9Mode(int mode) {
+        switch (mode) {
             case 1:
-                this.targetTasks.addTask(1,mob_mode);
+                this.targetTasks.addTask(1, mob_mode);
                 break;
             case 2:
                 this.targetTasks.removeTask(mob_mode);
-                this.targetTasks.addTask(1,full_mode);
+                this.targetTasks.addTask(1, full_mode);
                 break;
             default:
                 this.targetTasks.removeTask(full_mode);
                 break;
         }
-    }
-
-    @Override
-    protected void entityInit() {
-        super.entityInit();
-        this.dataManager.register(BATTERY,0);
-        this.dataManager.register(IS_MARK_II, rand.nextInt(10) >= 5);
-        this.dataManager.register(MODE,1);
     }
 
     @Override
@@ -111,31 +139,13 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand) {
-        UUID ownerID = getOwnerId();
-
-        if (player.getUniqueID().equals(ownerID)){
-            if (player.getHeldItem(hand).getItem() instanceof ItemRedstone && this.canReceive(REDSTONE_ENERGY_RESTORE)) {
-                player.getHeldItem(hand).shrink(1);
-                addEnergy(REDSTONE_ENERGY_RESTORE);
-                return true;
-            }
-
-            if (player.getHeldItem(hand).getItem() instanceof ItemK9Remote){
-                ItemK9Remote remote = (ItemK9Remote) player.getHeldItem(hand).getItem();
-                remote.setK9ID(player.getHeldItem(hand), this.getUniqueID());
-                K9.logger.debug(remote.getK9ID(player.getHeldItem(hand)));
-                return true;
-            }
-
-            if (player.getUniqueID().equals(ownerID)) {
-                player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, this.getEntityId(), 0, 0);
-                return true;
-            }
-        }
-
-        PlayerHelper.sendMessage(player, new TextComponentTranslation(K9Strings.K9.NOT_OWNER).getUnformattedComponentText(), true);
-        return false;
+    protected void entityInit() {
+        super.entityInit();
+        this.getDataManager().register(BATTERY, 0);
+        this.getDataManager().register(IS_MARK_II, rand.nextInt(10) >= 5);
+        this.getDataManager().register(MODE, 1);
+        this.getDataManager().register(TARGET, -1);
+        this.getDataManager().register(IS_FIRING, false);
     }
 
     @Override
@@ -165,49 +175,41 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         return SoundHandler.ENTITY_K9_DEATH;
     }
 
-    @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor) {
-        double x, y, z;
-        //Vec3d look;
-        if(getBattery() >= ENERGY_RAY_CONSUMPTION){
-            removeEnergy(ENERGY_RAY_CONSUMPTION);
-            //look = target.getPositionVector().subtract(this.getPositionVector());
-            EntityLaserRay laser = new EntityLaserRay(world, this, 8, new K9Source("K9"),new Vec3d(0,1,0));
-
-            x = posX + this.getLookVec().x;
-            y = posY + this.getEyeHeight();
-            z = posZ + this.getLookVec().z;
-
-            laser.shoot(x, y, z, 1.6F, (float) (14 - this.world.getDifficulty().getId() * 4));
-            this.world.spawnEntity(laser);
-
-            world.playSound(null,getPosition(),SoundHandler.ENTITY_K9_LASER_SHOOT,SoundCategory.HOSTILE,1F,1F);
-        }
-        else {
-            //Todo Add a sound when K9 can't shoot
-        }
-
-    }
-
-    @Override
-    public void setSwingingArms(boolean swingingArms) {
-
-    }
 
     @Override
     protected boolean canDespawn() {
         return false;
     }
 
-    
+
     //Inventory functions
 
-    private ItemStackHandler itemStackHandler = new ItemStackHandler(INVENTORY_SIZE) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            
+    @Override
+    public boolean processInteract(EntityPlayer player, EnumHand hand) {
+        UUID ownerID = getOwnerId();
+
+        if (player.getUniqueID().equals(ownerID)) {
+            if (player.getHeldItem(hand).getItem() instanceof ItemRedstone && this.canReceive(REDSTONE_ENERGY_RESTORE)) {
+                player.getHeldItem(hand).shrink(1);
+                addEnergy(REDSTONE_ENERGY_RESTORE);
+                return true;
+            }
+
+            if (player.getHeldItem(hand).getItem() instanceof ItemK9Remote) {
+                ItemK9Remote.setK9ID(player.getHeldItem(hand), this.getUniqueID());
+                K9.logger.debug(ItemK9Remote.getK9ID(player.getHeldItem(hand)));
+                return true;
+            }
+
+            if (player.getUniqueID().equals(ownerID)) {
+                player.openGui(K9.instance, Reference.GUI_ID_CONTAINER, world, this.getEntityId(), 0, 0);
+                return true;
+            }
         }
-    };
+
+        PlayerHelper.sendMessage(player, new TextComponentTranslation(K9Strings.K9.NOT_OWNER).getUnformattedComponentText(), true);
+        return false;
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -215,25 +217,48 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         if (compound.hasKey("items")) {
             itemStackHandler.deserializeNBT((NBTTagCompound) compound.getTag("items"));
         }
-        if (compound.hasKey("energy")){
+        if (compound.hasKey("energy")) {
             setBattery(compound.getInteger("energy"));
         }
-        if (compound.hasKey("mark2")){
+        if (compound.hasKey("mark2")) {
             setMarkII(compound.getBoolean("mark2"));
         }
-        if (compound.hasKey("mode")){
+        if (compound.hasKey("mode")) {
             setMode(compound.getInteger("mode"));
         }
+
+        if (compound.hasKey("target")) {
+            setTargetID(compound.getInteger("target"));
+        }
+
     }
+
+    public void setTargetID(int target) {
+        getDataManager().set(TARGET, target);
+    }
+
+    public int getTargetID() {
+        return getDataManager().get(TARGET);
+    }
+
+    public boolean getIsFiring() {
+        return getDataManager().get(IS_FIRING);
+    }
+
+    public void setIsFiring(boolean firing) {
+        getDataManager().set(IS_FIRING, firing);
+    }
+
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 
         super.writeToNBT(compound);
-        compound.setInteger("energy",getBattery());
+        compound.setInteger("energy", getBattery());
         compound.setTag("items", itemStackHandler.serializeNBT());
-        compound.setBoolean("mark2",isMarkII());
-        compound.setInteger("mode",getMode());
+        compound.setBoolean("mark2", isMarkII());
+        compound.setInteger("mode", getMode());
+        compound.setInteger("target", getTargetID());
         return compound;
     }
 
@@ -253,20 +278,20 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         return super.getCapability(capability, facing);
     }
 
-    public boolean isMarkII(){
+    public boolean isMarkII() {
         return this.dataManager.get(IS_MARK_II);
     }
 
-    public void setMarkII(boolean value){
-        this.dataManager.set(IS_MARK_II,value);
+    public void setMarkII(boolean value) {
+        this.dataManager.set(IS_MARK_II, value);
     }
 
-    public int getMode(){
+    public int getMode() {
         return this.dataManager.get(MODE);
     }
 
-    public void setMode(int value){
-        this.dataManager.set(MODE,value);
+    public void setMode(int value) {
+        this.dataManager.set(MODE, value);
         applyK9Mode(value);
     }
 
@@ -309,30 +334,30 @@ public class EntityK9 extends EntityWolf implements IRangedAttackMob, IEnergySto
         return getBattery() + value < ENERGY_MAX;
     }
 
-    public int getLevelEnergy(){
-        double level = (double)getBattery() / ENERGY_MAX;
-        return (int)Math.floor(level * 100);
+    public int getLevelEnergy() {
+        double level = (double) getBattery() / ENERGY_MAX;
+        return (int) Math.floor(level * 100);
     }
 
-    public void addEnergy(int value){
+    public void addEnergy(int value) {
         setBattery(getBattery() + value);
     }
 
-    public void removeEnergy(int value){
+    public void removeEnergy(int value) {
         setBattery(getBattery() - value);
     }
 
-    public void setBattery(int value){
-        this.dataManager.set(BATTERY, value);
+    public int getBattery() {
+        return this.dataManager.get(BATTERY);
     }
 
-    public int getBattery(){
-        return this.dataManager.get(BATTERY);
+    public void setBattery(int value) {
+        this.dataManager.set(BATTERY, value);
     }
 
     @Override
     public void onDeath(DamageSource p_onDeath_1_) {
-        K9Helper.removeK9(getOwnerId(),getUniqueID());
+        K9Helper.removeK9(getOwnerId(), getUniqueID());
         super.onDeath(p_onDeath_1_);
     }
 }

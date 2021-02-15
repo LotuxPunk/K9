@@ -1,6 +1,8 @@
 package com.vandendaelen.k9.event;
 
+import com.vandendaelen.k9.K9;
 import com.vandendaelen.k9.entities.EntityK9;
+import com.vandendaelen.k9.packets.MessageK9Teleport;
 import com.vandendaelen.k9.utils.K9Teleporter;
 import com.vandendaelen.k9.utils.Reference;
 import com.vandendaelen.k9.utils.helpers.K9Helper;
@@ -11,16 +13,30 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.common.ForgeVersion;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
+import static com.vandendaelen.k9.objects.items.ItemK9Remote.getK9ID;
+
 @Mod.EventBusSubscriber(modid = Reference.MODID)
 public class CommonEvents {
 
     public static K9WorldSavedData data;
+
+    @SubscribeEvent
+    public static void onCommand(ServerChatEvent event) {
+        String message = event.getMessage().toLowerCase();
+        if (message.startsWith("k9,")) {
+            if (message.contains("come here")) {
+                EntityK9 k9 = (EntityK9) event.getPlayer().world.getMinecraftServer().getEntityFromUuid(getK9ID(event.getPlayer().getHeldItem(event.getPlayer().getActiveHand())));
+                K9.NETWORK.sendToServer(new MessageK9Teleport(k9.getUniqueID()));
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent e) {
